@@ -1,0 +1,91 @@
+<div class="row" id="ui-filters">
+  <div class="item">
+    <h3>
+      Filters
+    </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      Filterable list
+    </h4>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      - An option to search across all list items
+      <br>
+    </h5>
+  </div>
+  <div class="item size-8">
+    <div class="row"><strong>Searchable list settings:</strong></div>
+    <ul class="row flex-direction-col">
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">placeholder</span>
+        <span>option to set a static placeholder</span>
+      </li>
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">hideList</span>
+        <span>option to hide list if no search string is typed yet, default is no hidden</span>
+      </li>
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">items</span>
+        <span>list of items to display in the list</span>
+      </li>
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">queryKey</span>
+        <span>option to define the searchable key: item[queryKey], by default, item itself will be the searchable key</span>
+      </li>
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">focus</span>
+        <span>whether to focus on searchable input field, default is false</span>
+      </li>
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">onItemSelected</span>
+        <span>an option to implement onItemSelected event using (onItemSelected)="onItemSelectedImpl($event)" </span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row v-center">
+  <div class="item">
+    Filterable list contains item.value as a searchable key:
+  </div>
+  <div class="item">
+    <prism-filterable-list [allowNewItem]="true"
+                           [hideList]="true"
+                           [placeholder]="'Search or add session'"
+                           [items]="dropdownValues"
+                           [queryKey]="'label'"
+                           [focus]="false"></prism-filterable-list>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <pre class="code prettyprint">
+      &lt;prism-filterable-list
+          [items]=&quot;listOfItems&quot;
+          [queryKey]=&quot;'value'&quot;
+          [focus]=&quot;true&quot;&gt;
+      &lt;/prism-filterable-list&gt;
+    </pre>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      DESC
+    </h4>
+  </div>
+</div>
+<div class="row">
+  <div class="item h-center">
+    <prism-filter [filtersList]="filtersList" [filterValues]="filtersCurrentValues"
+                  [selectedFilters]="selectedFilters"
+                  (onNewFilter)="getFieldsList()"
+                  (onFieldSelected)="onFieldSelected($event)"
+                  (onFiltersChanged)="onFiltersChanged($event)"></prism-filter>
+  </div>
+</div>

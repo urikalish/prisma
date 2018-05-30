@@ -1,0 +1,44 @@
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.center-text {
+  text-align: center;
+}
+
+// This selector is used by the 'prism-tabbable-input' directive!
+// angular usage: [attr.data-disabled]='disabled-state'
+[data-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+
+  * {
+    pointer-events: none;
+  }
+}
+
+//.ellipsis-parent {
+//  min-width: 0;
+//}
+
+.ellipsis {
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.background-block {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  cursor: default;
+}
+

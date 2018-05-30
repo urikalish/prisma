@@ -1,0 +1,78 @@
+<div class="container main">
+  <div class="row flex-direction-col disable-padding">
+    <span class="item title">Prism Manager</span>
+    <prism-dropdown class="item products" [displayedLabel]="productsModelService.getProds()[0].label">
+      <prism-list>
+        <prism-list-item *ngFor="let product of productsModelService.getProds()"
+                         [label]="product.label"
+                         (click)="selectProd(product)">
+          <!--<div class="content-left"><img src="/assets/{{item.icon}}.svg"></div>-->
+        </prism-list-item>
+      </prism-list>
+    </prism-dropdown>
+
+    <div class="item auts">
+      <section *ngIf="productsModelService.getProdApps(selectedProduct).length == 0 && !addingApplication">
+        <prism-button class="row v-center h-center add-first"
+                      [border]="false" size="medium" text="Add an application to get started" image="/assets/images/add.svg"
+                      (click)="addFirstApplicationClicked()">
+        </prism-button>
+      </section>
+
+      <div class="row h-space-between disable-padding add-aut" *ngIf="productsModelService.getProdApps(selectedProduct).length > 0 || addingApplication">
+        <span class="item h-center">Applications under test</span>
+        <prism-button class="item" [border]="false" size="medium" text="Add" image="/assets/images/add.svg"
+                      (click)="addApplicationClicked()">
+        </prism-button>
+      </div>
+
+      <ul class="applications" *ngIf="productsModelService.getProdApps(selectedProduct).length > 0">
+        <li class="application item" *ngFor="let application of productsModelService.getProdApps(selectedProduct); index as i">
+          <section class="row disable-padding h-space-between">
+            <section class="item">
+              {{application.label}}
+            </section>
+            <prism-button class="item" [border]="false" size="small" image="/assets/images/remove.png"
+              (click)="removeProdApp(application)">
+          </prism-button>
+          </section>
+
+          <ul class="environments" *ngIf="productsModelService.getAppEnvs(application).length > 0">
+            <li class="row disable-padding h-space-between" *ngFor="let env of productsModelService.getAppEnvs(application); index as i">
+              <section class="item">
+                {{env.label}}
+              </section>
+              <prism-button class="item" [border]="false" size="small" image="/assets/images/remove.png"
+                            (click)="removeAppEnv(application, env)">
+              </prism-button>
+            </li>
+          </ul>
+          <prism-button class="row h-center" [border]="false" size="medium" text="Add" image="/assets/images/add.svg"
+                        (click)="addEnvironmentClicked(application)">
+          </prism-button>
+
+          <prism-input *ngIf="addingEnvironmentToApplication == application.label" placeholder="Environment Name" [(ngModel)]="addingEnvironmentName">
+            <section class="row no-padding" input-end>
+              <prism-button class="item" [border]="false" size="small" text="" image="/assets/images/passed.svg"
+                            (click)="submitEnvironment(application)"></prism-button>
+
+              <prism-button class="item" [border]="false" size="small" text="" image="/assets/images/failed.svg"
+                            (click)="cancelAddEnvironment()"></prism-button>
+            </section>
+          </prism-input>
+        </li>
+      </ul>
+
+      <prism-input *ngIf="addingApplicationToProduct == selectedProduct.label" placeholder="Application Name" [(ngModel)]="addingApplicationName">
+        <section class="row no-padding" input-end>
+          <prism-button class="item" [border]="false" size="small" text="" image="/assets/images/passed.svg"
+                        (click)="submitApplication()"></prism-button>
+
+          <prism-button class="item" [border]="false" size="small" text="" image="/assets/images/failed.svg"
+                        (click)="cancelAddApplication()"></prism-button>
+        </section>
+      </prism-input>
+
+    </div>
+  </div>
+</div>

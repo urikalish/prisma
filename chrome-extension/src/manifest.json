@@ -1,0 +1,33 @@
+{
+  "name": "Visual Test Coverage",
+  "options_page": "options.html",
+  "background": {
+    "scripts": [
+      "background_script.bundle.js"
+    ]
+  },
+  "browser_action": {
+    "default_icon": "assets/prism_logo_16.png",
+    "default_popup": "popup/index.html"
+  },
+  "icons": {
+    "16": "assets/prism_logo_16.png",
+    "48": "assets/prism_logo_48.png",
+    "128": "assets/prism_logo_128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content_script.bundle.js"
+      ]
+    }
+  ],
+  "permissions": ["activeTab"],
+  "manifest_version": 2,
+  "version": "0.0.1",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

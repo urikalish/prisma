@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="popup-app">
+    popup
+    <input type="text"/>
+    <div role="button" id="active" class="btn kewl-btn">Role button</div>
+    <a id="im-unique2" class="btn kewl-btn">Link button</a>
+
+    <button onclick="alert('clicked');" class="btn kewl-btn active"><span>Click!</span></button>
+    <button onclick="alert('clicked 2!!');">Second Click! {{ num }}</button>
+    <button onclick="alert('clicked 2!!');" class="btn kewl-btn">Second Click! "{{ num }}</button>
+    <button disabled>Second Click! "{{ num }}</button>
+    <button disabled>Second Click! {{ num }}</button>
+
+</div>
+
+<script>
+  window.onload = function () {
+
+    var prismConfig = {
+      appName: 'Agent Test',
+      environment: 'dev',
+      tenantID: '324444016',
+      product: 'Octane',
+      productURL: 'https://octane-center.saas.hpe.com/ui/',
+      ctURL: 'https://msgalb002tex.saas.hpe.com',
+      ctClient: 'oauth2-jXemiF65O4YhdVVuUA4z@hpe.com',
+      ctSecret: '5huCgNdFTT8C03dVnF73',
+    };
+
+    window.pa = PrismAgent.initAgentInstance(prismConfig);
+
+    pa.listenToEvents(['onclick', 'click', 'change', 'onmousemove', 'random-event', 'mouseover']);
+  };
+</script>
+</body>
+</html>

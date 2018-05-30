@@ -1,0 +1,36 @@
+// This is the shorthand for flex-grow, flex-shrink and flex-basis combined.
+// The second and third parameters (flex-shrink and flex-basis) are optional.
+// Default is 0 1 auto.
+.flex(@values: 0 1 auto) {
+  -webkit-box-flex: @values;
+  -moz-box-flex: @values;
+  -webkit-flex: @values;
+  -ms-flex: @values;
+  flex: @values;
+  position: relative;
+}
+
+// By default, flex items are laid out in the source order. However, the order
+// property controls the order in which they appear in the flex container.
+.order(@value) {
+  -webkit-box-ordinal-group: @value;
+  -moz-box-ordinal-group: @value;
+  -ms-flex-order: @value;
+  -webkit-order: @value;
+  order: @value;
+}
+
+// This allows the default alignment (or the one specified by align-items) to be
+// overridden for individual flex items. Please see the align-items explanation
+// to understand the available values.
+.align-self(@alignment) when (@alignment = start), (@alignment = end) {
+  -webkit-align-self: e("flex-@{alignment}");
+  -ms-flex-item-align: @alignment;
+  align-self: e("flex-@{alignment}");
+}
+
+.align-self(@alignment) when (default()) {
+  -webkit-align-self: @alignment;
+  -ms-flex-item-align: @alignment;
+  align-self: @alignment;
+}

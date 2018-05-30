@@ -1,0 +1,4 @@
+rootProject.name = 'prism'
+
+include 'prism-manager'
+include 'prism-test'

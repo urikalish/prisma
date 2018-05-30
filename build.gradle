@@ -1,0 +1,69 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven
+                {
+                    url "https://plugins.gradle.org/m2/"
+                }
+    }
+
+    dependencies {
+        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'org.apache.httpcomponents:httpclient:4.5.3'
+        classpath 'gradle.plugin.com.github.rsuiteCMS:gradlePhantomjsAssistant:0.4'
+    }
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+subprojects {
+
+    group = 'prism'
+    version = "1.0-SNAPSHOT"
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'project-report'
+    apply plugin: 'org.springframework.boot'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "http://mydtbld0051.hpeswlab.net:8081/nexus/content/groups/alm-public"
+        }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.6.0'
+    }
+
+    ext {
+        buildId = System.getProperty("build.number", "0")
+        branch = System.getProperty("branch.name", "local")
+        ext['selenium.version'] = '3.6.0'
+
+        // colors
+        ESC = "${(char) 27}"
+        CYAN = "${ESC}[36m"
+        GREEN = "${ESC}[32m"
+        YELLOW = "${ESC}[33m"
+        PINK = "${ESC}[35m"
+        RED = "${ESC}[31m"
+        NORMAL = "${ESC}[0m"
+    }
+}

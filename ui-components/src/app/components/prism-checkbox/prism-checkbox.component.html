@@ -1,0 +1,11 @@
+<div prismToggle [isToggled]="toggleVariable" (isToggledChange)="toggleCheckbox($event)"
+     classWhenToggled="checked-state"
+     class="prism-{{flavor}}" role="checkbox">
+  <label class="checkbox" #toggleButton prismTabbableInput>
+    <!--<label>-->
+    <!--<input type="checkbox" [checked]="state" (change)="state = !state"/>-->
+    <span class="checkbox-input" #toggleContent></span>
+    <span class="checkbox-text {{textDirection}}" [hidden]="!text">{{text}}</span>
+    <!--</label>-->
+  </label>
+</div>

@@ -1,0 +1,15 @@
+<li class="prism-list-item item size-8 flex-direction-row v-center" role="menuitem" #item>
+  <span class="item no-padding h-center">
+    <ng-content></ng-content>
+  </span>
+
+  <span class="item no-padding auto-width ellipsis">
+    <span class="ellipsis">{{label}}</span>
+  </span>
+
+  <span class="item no-padding h-center">
+    <ng-content select="[item-end]"></ng-content>
+  </span>
+  <!--<ng-container *ngTemplateOutlet="listItem"></ng-container>-->
+</li>
+

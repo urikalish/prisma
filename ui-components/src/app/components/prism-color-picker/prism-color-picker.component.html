@@ -1,0 +1,7 @@
+<prism-dropdown class="color-picker" [selectedIndex]="selectedIndex" prismListNavigation>
+  <prism-list>
+    <prism-list-item *ngFor="let color of colors">
+      <span class="color" [style.background-color]="color"></span>
+    </prism-list-item>
+  </prism-list>
+</prism-dropdown>

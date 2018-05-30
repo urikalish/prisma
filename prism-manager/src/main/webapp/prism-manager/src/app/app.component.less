@@ -1,0 +1,55 @@
+@import "~ui-components/src/styles";
+@import "~ui-components/src/app/components/variables";
+
+.main {
+  margin: auto;
+  height: 760px;
+  width: 444px;
+}
+
+.title{
+  font-size: 36px;
+  margin-bottom: 49px;
+}
+
+.products{
+  margin-bottom: 20px;
+}
+
+.auts{
+  border: 2px solid @border-normal-color;
+  padding: 5px 20px;
+  min-height: 400px;
+
+  .add-aut {
+    margin: 5px;
+    span {
+      font-size: 18px;
+    }
+  }
+}
+
+/deep/ .dropdown-container {
+  border-width: 2px !important;
+
+  .content {
+    border-width: 2px !important;
+    left: -2px !important;
+    right: -2px !important;
+  }
+}
+
+.applications{
+  .application{
+    border: 1px solid @border-normal-color;
+    padding: 5px;
+    margin-bottom: 20px;
+    section{
+      padding-bottom: 10px;
+    }
+  }
+
+  .environments{
+    padding-left: 20px;
+  }
+}

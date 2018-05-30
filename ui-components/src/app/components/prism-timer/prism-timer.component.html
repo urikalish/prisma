@@ -1,0 +1,5 @@
+<div>
+  <span *ngIf="displayHours && displayMinutes">{{(hours ? hours : '00')}} :</span>
+  <span *ngIf="displayMinutes">{{(minutes) && (minutes <= 59) ? minutes : '00'}} :</span>
+  {{(seconds) && (seconds <= 59) ? seconds : '00'}} <br/>
+</div>

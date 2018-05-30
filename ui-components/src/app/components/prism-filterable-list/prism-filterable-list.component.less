@@ -1,0 +1,61 @@
+@import "../variables";
+
+.filterable-list {
+
+  z-index: 3;
+  .prism-input {
+    min-width: @filterable-list-width;
+    padding: 0 @filterable-list-padding-right 0 @filterable-list-padding-left;
+    height: @filterable-list-height;
+    line-height: @filterable-list-height;
+
+    input {
+      font-size: @filterable-list-font-size;
+      height: @filterable-list-height - 2px;
+      line-height: @filterable-list-height - 2px;
+    }
+  }
+
+  prism-list {
+    outline: none;
+  }
+
+  .content {
+    max-height: @filterable-list-item-height * 5;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: solid 1px @filterable-list-border-color;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    &.list-on-bottom {
+      top: 18px;
+    }
+
+    &.list-on-top {
+      bottom: 18px;
+    }
+  }
+
+  //.prism-list {
+  prism-list-item {
+    cursor: default;
+    height: @filterable-list-item-height;
+    line-height: @filterable-list-item-height;
+
+    &.active {
+      li.prism-list-item {
+        background-color: @list-item-hover-color;
+      }
+    }
+
+    li.prism-list-item {
+      min-width: @filterable-list-width;
+      padding: 0 @filterable-list-padding-right 0 @filterable-list-padding-left;
+      height: @filterable-list-item-height;
+      line-height: @filterable-list-item-height;
+      font-size: @filterable-list-font-size;
+    }
+  }
+}

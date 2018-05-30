@@ -1,0 +1,176 @@
+@nav-height: 50px;
+@side-nav-width: 245px;
+
+@bg-color: white;
+@text-color: #555555;
+@microfocus-blue: #0075ED;
+@border-normal-color: #cccccc;
+@border-hover-color: rgba(109, 173, 239, 0.89);
+
+.main-container {
+  //padding-top: @nav-height;
+  background-color: @bg-color;
+  //min-height: 100%;
+  //overflow: hidden;
+
+  nav {
+    z-index: 9999;
+    background-color: @microfocus-blue;
+    height: @nav-height;
+    color: white;
+
+    .github {
+      margin: 0;
+      text-align: center;
+      width: auto !important;
+      img {
+        width: 30px !important;
+      }
+    }
+
+    .menu-button {
+      background-color: @microfocus-blue;
+      border-radius: 3px;
+      font-size: 0.7em;
+      color: white;
+      width: 40px;
+      line-height: 30px;
+      padding: 5px;
+      margin-right: 5px;
+      user-select: none;
+      cursor: pointer;
+
+      span {
+        height: 30px;
+        display: block;
+        vertical-align: middle;
+      }
+
+      &:hover {
+        color: @text-color;
+        background-color: @border-hover-color;
+      }
+    }
+  }
+
+  main {
+    background-color: @bg-color;
+
+    footer {
+      color: white;
+      margin-top: 30px;
+      background-color: @microfocus-blue;
+
+      .row {
+        height: 50px;
+      }
+    }
+
+    > aside {
+      //border-right: 1px solid @border-normal-color;
+      padding-top: 20px !important;
+      width: @side-nav-width;
+      min-width: @side-nav-width;
+      transition: 0.2s ease-in-out all;
+      overflow: hidden;
+      box-shadow: @border-normal-color 5px 0 15px;
+
+      &.hidden {
+        display: flex !important;
+        //.flex();
+        width: 0;
+        min-width: 0;
+        padding-right: 0;
+        padding-left: 0;
+
+        ul {
+          width: 0;
+        }
+      }
+
+      ul {
+        transition: 0.2s ease-in-out width;
+        width: @side-nav-width;
+        min-width: 0;
+      }
+
+      li {
+        min-width: @side-nav-width;
+        transition: 0.2s ease-in-out background-color, color;
+
+        &.link:hover {
+          background-color: @border-hover-color;
+          color: white;
+        }
+
+        &:not(.link) {
+          color: @text-color;
+        }
+      }
+    }
+
+    > section#main-section {
+      overflow-x: auto;
+      overflow-y: auto;
+      min-height: 100%;
+      max-height: 100%;
+      height: ~"calc(100vh - @{nav-height})";
+      //max-width: 100vw;
+      //overflow: hidden;
+      //max-width: ~"calc(100% - @{side-nav-width})";
+      //padding: 10px 40px;
+
+      > .container {
+        //min-width: 700px;
+        //width: ~"calc(100% - @{side-nav-width})";
+        //height: 100%;
+
+        &:not(footer) {
+          max-width: ~"calc(100vw - @{side-nav-width})";
+          //margin-bottom: @nav-height;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep hr {
+  border-color: @microfocus-blue;
+  margin: 20px 0;
+}
+
+//hr {
+//  border-color: @microfocus-blue;
+//  margin: 20px 0;
+//}
+
+//.code {
+//  background-color: #f1f1f1;
+//  padding: 10px 10px 0;
+//  border: none !important;
+//  max-height: 400px;
+//  overflow: auto;
+//
+//  &:before {
+//    content: "<code sample>";
+//    text-transform: uppercase;
+//    position: relative;
+//    display: block;
+//    font-size: 0.7em;
+//    text-align: end;
+//    text-align: right;
+//    margin: -10px -10px 10px;
+//    color: white;
+//    padding: 3px 10px;
+//    background-color: rgba(0, 117, 237, 0.55);
+//  }
+//}
+//
+//label.radio-input {
+//  cursor: pointer;
+//  display: block;
+//  > span, input {
+//    cursor: pointer;
+//    display: inline-block;
+//  }
+//}

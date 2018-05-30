@@ -1,0 +1,105 @@
+// This defines a flex container; inline or block depending on the given value.
+// It enables a flex context for all its direct children.
+.flexbox(@type: flex) {
+  //display: -webkit-box;
+  //display: -moz-box;
+  display: e("-webkit-@{type}");
+  display: e("-ms-@{type}");
+  display: @type;
+  position: relative;
+}
+
+// This establishes the main-axis, thus defining the direction flex items
+// are placed in the flex container. Flexbox is (aside from optional wrapping)
+// a single-direction layout concept. Think of flex items as primarily laying
+// out either in horizontal rows or vertical columns.
+.flex-direction(@value) {
+  -webkit-flex-direction: @value;
+  //-moz-flex-direction: @value;
+  -ms-flex-direction: @value;
+  flex-direction: @value;
+}
+
+// By default, flex items will all try to fit onto one line. You can change
+// that and allow the items to wrap as needed with this property.
+.flex-wrap(@value) {
+  -webkit-flex-wrap: @value;
+  -ms-flex-wrap: @value;
+  flex-wrap: @value;
+}
+
+// This defines the alignment along the main axis. It helps distribute extra free
+// space left over when either all the flex items on a line are inflexible, or are
+// flexible but have reached their maximum size. It also exerts some control over
+// the alignment of items when they overflow the line.
+.justify-content(@direction) when (@direction = start), (@direction = end) {
+  -webkit-box-pack: @direction;
+  -webkit-justify-content: e("flex-@{direction}");
+  -ms-flex-pack: @direction;
+  justify-content: e("flex-@{direction}");
+}
+
+.justify-content(@direction) when (@direction = justify), (@direction = space-between) {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.justify-content(@direction) when (@direction = space-around) {
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+
+.justify-content(@direction) when (default()) {
+  -webkit-box-pack: @direction;
+  -webkit-justify-content: @direction;
+  -ms-flex-pack: @direction;
+  justify-content: @direction;
+}
+
+// This defines the default behaviour for how flex items are laid out along
+// the cross axis on the current line. Think of it as the justify-content
+// version for the cross-axis (perpendicular to the main-axis)
+.flex-align(@alignment) when (@alignment = start), (@alignment = end) {
+  -webkit-box-align: @alignment;
+  -webkit-align-items: e("flex-@{alignment}");
+  -ms-flex-align: @alignment;
+  align-items: e("flex-@{alignment}");
+}
+
+.flex-align(@alignment) when (default()) {
+  -webkit-box-align: @alignment;
+  -webkit-align-items: @alignment;
+  -ms-flex-align: @alignment;
+  align-items: @alignment;
+}
+
+// This aligns a flex container's lines within when there is extra space in the
+// cross-axis, similar to how justify-content aligns individual items within
+// the main-axis.
+// Note: this property has no effect when there is only one line of flex items.
+.align-content(@alignment) when (@alignment = start), (@alignment = end) {
+  -webkit-align-content: e("flex-@{alignment}");
+  -ms-flex-line-pack: @alignment;
+  align-content: e("flex-@{alignment}");
+}
+
+.align-content(@direction) when (@direction = justify), (@direction = space-between) {
+  -webkit-align-content: space-between;
+  -ms-flex-line-pack: justify;
+  align-content: space-between;
+}
+
+.align-content(@direction) when (@direction = space-around) {
+  -webkit-align-content: space-around;
+  -ms-flex-line-pack: distribute;
+  align-content: space-around;
+}
+
+.align-content(@alignment) when (default()) {
+  -webkit-align-content: @alignment;
+  -ms-flex-line-pack: @alignment;
+  align-content: @alignment;
+}

@@ -1,0 +1,191 @@
+<div class="row" id="grid-items">
+  <div class="item">
+    <h3>
+      Items
+    </h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      The item component is how a row is divided, It can host both content & other grid components.
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      - An item's width is determined by default by its content.
+      <br>
+
+      - An item has default padding in both axis.
+      <br>
+
+      - Items are stacked by default to the left (to the right when RTL).
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container grid-visualization">
+      <div class="row">
+        <div class="item" *ngFor="let i of grid.sizes">
+          .item
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="item"&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class="item"&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class="item"&gt;
+      ...
+    &lt;/div&gt;
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      - Flex Direction
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      Each grid component can align its content by rows or columns.
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container flex-direction-row grid-visualization h-space-around">
+      <div class="row disable-margin flex-direction-col size-{{i}}"
+           *ngFor="let i of grid.sizes | slice:0:3">
+        <div class="item" *ngFor="let j of grid.sizes">
+          .item
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;div class="container flex-direction-row h-space-around"&gt;
+  &lt;div class="row flex-direction-col size-1"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="row flex-direction-col size-2"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div class="row flex-direction-col size-3"&gt;
+    ...
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</div>
+
+<!-- Item Sizes -->
+<div class="row">
+  <div class="item">
+    <h4>
+      - Item Sizes
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      An item can have different sizes like:
+      <br>
+
+      - An item's size can be determine only by its content.
+      <br>
+
+      - An item can take from 1 to 8 units of each row.
+      <br>
+
+      - An item can take the remaining space in a row dynamically.
+      <br>
+
+      - By default, all items in the same row are stretched to the same height.
+      <br>
+
+      - When items fill a row with more than 8 units, the remaining items are stacked to the bottom.
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container grid-visualization">
+      <div class="row">
+        <div class="item size-{{i}}" *ngFor="let i of grid.sizes">
+          .size-{{i}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="item">
+          the size of this item is determined by its content.
+        </div>
+        <div class="item auto-width">
+          .auto-width
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="item size-1"&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class="item size-2"&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class="item size-3"&gt;
+      ...
+    &lt;/div&gt;
+    ...
+  &lt;/div&gt;
+  ...
+  &lt;div class="row"&gt;
+    &lt;div class="item"&gt;
+      the size of this item is determined by its content.
+    &lt;/div&gt;
+    &lt;div class="item auto-width"&gt;
+      ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+@import "../variables";
+@button-bg-color: #F5F5F5;
+@button-bg-hover-color: #e1e1e1;
+
+div.prism-filter {
+  font-size: 13px;
+  font-weight: bold;
+  color: @text-color;
+  min-height: 20px;
+
+  section {
+    position: absolute;
+  }
+
+  .selectedFieldName, .selectedFieldValue, .selectedField, .selectedValue {
+    border: solid 1px @border-normal-color;
+    padding: 1px 9px 1px 9px;
+  }
+
+  .selectedFieldValue{
+    padding-right: 6px;
+  }
+
+  button{
+    cursor: pointer;
+    outline: none;
+    border: solid 1px @border-normal-color;
+    padding: 0;
+
+    &.add{
+      width: 26px;
+      height: 20px;
+      background-color: @button-bg-color;
+      padding: 0 4px;
+      background-image: url("../../../assets/add-filter.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &:hover{
+        background-color: @button-bg-hover-color;
+      }
+    }
+
+    &.remove{
+      border: none;
+      padding: 0;
+      margin-left: 4px;
+      background-image: url("../../../assets/delete-micro.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      width: 8px;
+      height: 8px;
+
+      &:hover{
+        background-color: @button-bg-hover-color;
+      }
+    }
+  }
+
+  div.fieldValues{
+
+    input{
+      outline: none;
+      border: solid 1px @border-normal-color;
+    }
+
+    label{
+      border-right-width: 0;
+    }
+  }
+
+  ul{
+
+    &.selectedFilters{
+      padding: 0;
+
+      li{
+        padding: 0 6px 0 0;
+
+        label.selectedFieldName{
+          border-right-width: 0;
+        }
+      }
+    }
+
+    &:not(.selectedFilters) {
+      border: solid 1px @border-normal-color;
+
+      li {
+        padding: 1px 8px 2px 9px;
+        &:hover {
+          background-color: @list-item-hover-color;
+        }
+      }
+    }
+  }
+
+  .content {
+    z-index: 3;
+  }
+}

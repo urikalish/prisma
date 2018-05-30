@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: MetricHPE;
+  src: url('assets/MetricHPE-Web-Regular.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body * {
+  font-family: MetricHPE;
+}

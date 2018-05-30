@@ -1,0 +1,35 @@
+@border-color: #e2e2e2;
+@container-bg: #efe79d;
+@row-bg: rgba(147, 211, 252, 0.49);
+@item-bg: #eaa18e;
+
+.container.grid-visualization {
+  background-color: @container-bg;
+  border: 10px solid white;
+
+  outline: 1px solid @border-color;
+  //outline-offset: 0px;
+
+  .row {
+    background-color: @row-bg;
+    //.flex(1 0 auto);
+    outline: 1px solid @border-color;
+    //outline-offset: -1px;
+
+    > .item {
+      background-color: @item-bg;
+      outline: 1px solid @border-color;
+      //outline-offset: -1px;
+    }
+  }
+
+  .disable-visualization {
+    background-color: transparent !important;
+    outline: none !important;
+
+    > .item {
+      background-color: transparent !important;
+      outline: none !important;
+    }
+  }
+}

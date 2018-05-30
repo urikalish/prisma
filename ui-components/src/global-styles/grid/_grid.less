@@ -1,0 +1,138 @@
+@import "../mixins/_flex-container";
+@import "../mixins/_flex-item";
+@import "../mixins/_grid-generate-item-classes";
+
+@number-of-size-units: 8;
+
+.container {
+  .flexbox();
+  .flex-direction(column);
+  .flex(0 0 auto);
+  //overflow: hidden;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  min-width: 0; //fix for firefox
+
+  .row {
+    .flexbox();
+    .flex-direction(row);
+    .justify-content(stretch);
+    .flex-wrap(wrap);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    .flex(0 0 auto);
+    min-width: 0; //fix for firefox
+
+    &.auto-width {
+      .flex(1 1 auto);
+      //.flex(1);
+    }
+
+    .generate-item-ratio-class(@number-of-size-units);
+
+    .item {
+      .flexbox(flex);
+      //.flexbox(inline-flex);
+      .flex-direction(column);
+      .flex(0 0 auto);
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      min-width: 0; //fix for firefox
+
+      &.auto-width {
+        .flex(1 1 auto);
+        //.flex(1);
+      }
+
+      .generate-item-ratio-class(@number-of-size-units);
+    }
+  }
+}
+
+// Horizontal alignment
+.h-center {
+  .justify-content(center) !important;
+}
+
+.h-end {
+  .justify-content(end) !important;
+}
+
+.h-start {
+  .justify-content(start) !important;
+}
+
+.h-space-between {
+  .justify-content(space-between) !important;
+}
+
+.h-space-around {
+  .justify-content(space-around) !important;
+}
+
+.h-space-evenly {
+  .justify-content(space-evenly) !important;
+}
+
+// Items vertical position
+.v-center {
+  .flex-align(center) !important;
+}
+
+.v-end {
+  .flex-align(end) !important
+}
+
+.v-start {
+  .flex-align(start) !important;
+}
+
+.v-stretch {
+  .flex-align(stretch) !important;
+}
+
+.v-baseline {
+  .flex-align(baseline) !important;
+}
+
+// Content alignment
+.content-center {
+  .align-content(center) !important;
+}
+
+.content-stretch {
+  .align-content(stretch) !important;
+}
+
+.content-end {
+  .align-content(end) !important;
+}
+
+.content-start {
+  .align-content(start) !important;
+}
+
+.content-space-between {
+  .align-content(space-between) !important;
+}
+
+.content-space-around {
+  .align-content(space-around) !important;
+}
+
+.content-space-evenly {
+  .align-content(space-evenly) !important;
+}
+
+.nowrap {
+  .flex-wrap(nowrap) !important;
+}
+
+.flex-direction-row {
+  .flex-direction(row) !important;;
+}
+
+.flex-direction-col {
+  .flex-direction(column) !important;;
+}

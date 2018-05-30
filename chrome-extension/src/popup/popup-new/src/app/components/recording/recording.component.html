@@ -1,0 +1,43 @@
+<div class="row h-space-around v-center">
+  <!--<input class="item v-center size-3 ellipsis" placeholder="Add recording name" type="text"
+         [(ngModel)]="recordingState.recordingName"
+         (keydown.enter)="recordingState.played = !recordingState.played"
+         [attr.data-disabled]="recordingState.played">-->
+  <prism-filterable-list class="item v-center size-3"
+                         [items]="recordingState.recordingNames"
+                         placeholder="Search or add recording"
+                         [hideList]="true"
+                         [allowNewItem]="true"
+                         [focus]="true"
+                         openList="top"
+                         [attr.data-disabled]="recordingState.played"
+                         (onItemSelected)="recordingState.recordingName = $event">
+  </prism-filterable-list>
+  <div *ngIf="recordingState.played; then recording else notRecording"></div>
+    <ng-template #notRecording>
+      <prism-button class="item" text="Start recording"
+                    size="large"
+                    image="assets/images/start-recording.svg"
+                    (click)="recordingState.startRecording()"
+                    [attr.data-disabled]='!recordingState.recordingName'>
+      </prism-button>
+    </ng-template>
+    <ng-template #recording>
+      <prism-button class="item" size="large"
+                    image="assets/images/stop-recording.svg"
+                    (click)="recordingState.stopRecording()">
+        <prism-timer button-end></prism-timer>
+      </prism-button>
+     <!-- <prism-button class="item size-2" text="{{recordingState.clicksCount + ' clicks'}}"
+                    size="large"
+                    image="assets/images/undo-clicks.svg"
+                    type="submit"
+                    (click)="recordingState.revertClicks()">
+      </prism-button>-->
+    </ng-template>
+</div>
+
+
+
+
+

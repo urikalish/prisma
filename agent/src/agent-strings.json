@@ -1,0 +1,7 @@
+{
+  "//": "You can replace variables in strings by replacing $[VAR_INDEX]",
+  "agent": {
+    "loaded": "Prism agent is loaded! (Version: $0)",
+    "monitoringEvents": "Prism is now monitoring the following events:"
+  }
+}

@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+@import "global-styles/index";
+
+@font-face {
+  font-family: MetricHPE;
+  src: url('./assets/MetricHPE-Web-Regular.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  .flexbox(flex);
+  .flex-direction(column);
+}
+
+body * {
+  font-family: MetricHPE;
+}
+
+//
+//.hidden {
+//  display: none !important;
+//}
+
+svg * {
+  fill: currentColor;
+}
+
+pre.code {
+  background-color: #f1f1f1;
+  padding: 10px 10px !important;
+  border: none !important;
+  max-height: 400px;
+  overflow: auto;
+
+  &:before {
+    content: "<code sample>";
+    text-transform: uppercase;
+    position: relative;
+    display: block;
+    font-size: 0.7em;
+    text-align: end;
+    text-align: right;
+    margin: -10px -10px 10px;
+    color: white;
+    padding: 3px 10px;
+    background-color: rgba(0, 117, 237, 0.55);
+  }
+}
+
+label.radio-input {
+  cursor: pointer;
+  display: block;
+  > span, input {
+    cursor: pointer;
+    display: inline-block;
+  }
+}
+
+.code-settings {
+  background: #f8f8f8;
+  border-radius: 3px;
+  margin: 2px 2px;
+  padding: 0 5px;
+  border: 1px solid #eaeaea;
+}

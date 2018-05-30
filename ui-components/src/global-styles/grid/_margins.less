@@ -1,0 +1,15 @@
+.container:not(.disable-margin) {
+  .row:not(.disable-margin) {
+    margin-top: @row-top-margin;
+    margin-left: @row-left-margin;
+    margin-right: @row-right-margin;
+
+    &:not(:last-of-type) {
+      margin-bottom: @row-bottom-margin;
+    }
+
+    > .item {
+
+    }
+  }
+}

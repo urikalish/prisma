@@ -1,0 +1,9 @@
+<label class="switch"
+       [ngClass]="{
+          'round' : toggleStyle == 'Round',
+          'square' : toggleStyle == 'Square'
+         }"
+>
+  <input type="checkbox" [checked]="state" (change)="state = !state">
+  <span class="slider"></span>
+</label>

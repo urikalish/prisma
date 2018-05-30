@@ -1,0 +1,28 @@
+section#prism\:container {
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    display: block;
+    overflow: hidden;
+    height: auto;
+    background: gainsboro;
+    border: 2px solid grey;
+    /*text-align: center;*/
+    padding: 5px;
+}
+
+section#prism\:container h5 {
+    margin: 0;
+}
+
+section#prism\:container button {
+    background: red !important;
+}
+
+section#prism\:container button.on {
+    background: greenyellow !important;
+}
+
+section#prism\:container .prism\:template {
+    display: none;
+}

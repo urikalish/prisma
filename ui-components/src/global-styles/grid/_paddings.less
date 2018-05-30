@@ -1,0 +1,10 @@
+.container:not(.disable-padding) {
+  padding: @container-v-padding @container-h-padding;
+
+  .row:not(.disable-padding) {
+    padding: @row-v-padding @row-h-padding;
+    > .item {
+      padding: @item-v-padding @item-h-padding;
+    }
+  }
+}

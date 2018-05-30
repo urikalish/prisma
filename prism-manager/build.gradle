@@ -1,0 +1,377 @@
+import com.github.rsuiteCMS.gradlePhantomjsAssistant.PhantomJSConfig
+import groovyx.net.http.HTTPBuilder
+import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.Method.GET
+import static org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS
+import static org.apache.tools.ant.taskdefs.condition.Os.isFamily
+
+plugins {
+    id "com.moowork.node" version "1.1.1"
+    id "eu.leontebbens.gradle.chromedriver-updater" version "1.6"
+    id "org.sonarqube" version "2.2"
+}
+
+ext {
+    buildJob = System.getProperty("build.job", "${System.getProperty("user.name")}'s private box")
+    buildId = System.getProperty("build.number", "0")
+    branch = System.getProperty("branch.name", "local")
+
+    itPort = System.getProperty("random.port", "false") == "true" ? new Random().nextInt(50000) + 1024 : 8443
+}
+
+def toolsDir = "$projectDir/tools"
+def jacocoDir = "$toolsDir/jacoco"
+def jacocoAgent = "$jacocoDir/lib/jacocoagent.jar"
+def jacocoPort = itPort + 1
+
+configurations {
+    jacoco
+}
+
+node {
+    version = "6.11.1"
+    download = true
+    nodeModulesDir = file("src/main/webapp/prism-manager")
+}
+
+task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = 'Compile client side folder for development'
+    args = ['run', 'build']
+}
+
+task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = 'Build and watches the client side assets for rebuilding'
+    args = ['run', 'buildWatch']
+}
+
+task startClient(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = "Run the client"
+    args = ['run', 'start']
+}
+
+bootRun.dependsOn(buildClient)
+jar.dependsOn(buildClient)
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "org.springframework.boot:spring-boot-devtools"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-remote-shell"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.boot:spring-boot-starter-freemarker"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "com.h2database:h2:1.4.192"
+    compile "com.fasterxml.jackson.core:jackson-databind"
+    compile "org.projectlombok:lombok:1.16.16"
+    compile "com.hp.hpsso.components:hpssoImpl:3.7.7.9.6"
+    jacoco "org.jacoco:jacoco:0.7.7.201606060606@zip"
+}
+
+sonarqube {
+    properties {
+        property "sonar.exclusions", "**/test/**/*"
+    }
+}
+
+task getPhantomJs {
+    def PHANTOMJS_VERSION = "2.1.1"
+    def PHANTOMJS_DIR = "$toolsDir/phantomjs"
+
+    inputs.property("PHANTOMJS_VERSION", PHANTOMJS_VERSION)
+    outputs.dir(PHANTOMJS_DIR)
+
+    if (isFamily(FAMILY_WINDOWS)) {
+        ext.phantomJsLocation = "$PHANTOMJS_DIR/phantomjs-$PHANTOMJS_VERSION-windows/bin/phantomjs.exe"
+    } else {
+        ext.phantomJsLocation = "$PHANTOMJS_DIR/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs"
+    }
+
+    doLast {
+        def phantomArtifact = PhantomJSConfig.getPhantomJSBuilds(PHANTOMJS_VERSION).latest()
+        println "downloading ${phantomArtifact.href} (archive type: $phantomArtifact.archiveType.value)"
+
+        ant.mkdir(dir: PHANTOMJS_DIR)
+        def phantomPackage = "$toolsDir/phantomjs-${PHANTOMJS_VERSION}.${phantomArtifact.archiveType.value}"
+        ant.get(src: PhantomJSConfig.getPhantomJSBuilds(PHANTOMJS_VERSION).latest().href, dest: phantomPackage, skipexisting: 'true')
+
+        switch (phantomArtifact.archiveType.value) {
+            case "zip":
+                ant.unzip(src: phantomPackage, dest: PHANTOMJS_DIR)
+                break
+            case "tar.bz2":
+                ant.untar(src: phantomPackage, dest: PHANTOMJS_DIR, compression: "bzip2")
+                println "chmod 755 $phantomJsLocation"
+                ant.chmod(dir: "$phantomJsLocation", perm: "755")
+                break
+        }
+    }
+}
+
+test {
+    maxParallelForks = 5
+    forkEvery = 5
+    include '**/*Test.*'
+    exclude '**/*IntegrationTest.*'
+    exclude '**/*SeleniumTest.*'
+}
+
+task jacocoSetup {
+    doLast {
+        def jacocoZip = configurations.jacoco.singleFile
+
+        if (!new File(jacocoAgent).exists()) {
+            println "${PINK}setting up Jacoco from ${jacocoZip}$NORMAL"
+            ant.unzip(src: jacocoZip, dest: jacocoDir)
+        }
+    }
+}
+
+String itHost = System.getProperty("mgmt.host", "devenv.hpeswlab.net")
+String schema = System.getProperty("prism.base.schema", "http");
+String baseUrl = System.getProperty("prism.base.url", "$schema://$itHost:$itPort/")
+String heartBeat = "heartbeat"
+
+Process itServer = null
+
+task startIntegrationTestServer {
+    def checkServerStatus = {
+        def healthUrl = "$baseUrl$heartBeat"
+        def http = new HTTPBuilder(healthUrl)
+        println "Health Check --> ${healthUrl}"
+        try {
+            http.request(GET, JSON) { req ->
+
+                response.success = { resp, json ->
+                    println "${GREEN}health $resp.statusLine ${NORMAL}"
+                    return ServerStatus.UP
+                }
+
+                response.failure = { resp ->
+                    println "${RED}$resp${NORMAL}"
+                    return ServerStatus.DOWN
+                }
+            }
+        } catch (Exception ex) {
+            println ex;
+        }
+    }
+
+    def hasServerExited = { Process process ->
+        try {
+            process.exitValue()
+            return true
+        } catch (IllegalThreadStateException ex) {
+            return false
+        }
+    }
+
+    doLast {
+        println "${CYAN}integration tests:$NORMAL starting server, using Jacoco agent at $jacocoAgent..."
+
+        String javaExe = System.getProperty("java.exe", "java")
+        String profiles = System.getProperty("spring.profiles.active", "integrationTest")
+
+        String[] args = [javaExe]
+
+        if (System.getProperty("jacoco.enabled", "true") == "true") {
+            args += ["-javaagent:$jacocoAgent=" +
+                             "output=tcpserver," +
+                             "append=false," +
+                             "port=$jacocoPort"]
+
+        }
+        if (System.getProperty("debug", "false") == "true") {
+            args += ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"]
+        }
+        args += ["-Dspring.profiles.active=$profiles",
+                 "-Dserver.port=$itPort",
+                 "-Desm.import.url.schema=$schema",
+                 "-jar",
+                 jar.archivePath.absolutePath]
+
+        println "command line: ${args.join(' ')}"
+
+        def pb = new ProcessBuilder(args)
+        pb.redirectErrorStream(true)
+
+        itServer = pb.start()
+
+        File logFile = new File("$buildDir/it-app.log")
+        if (!logFile.exists()) {
+            logFile.createNewFile()
+        }
+
+        def output = new FileOutputStream(logFile)
+        try {
+            itServer.consumeProcessOutputStream(output)
+
+            def status = ServerStatus.TIMED_OUT
+            for (i in 0..10) {
+                Thread.sleep(60000)
+
+                if (hasServerExited(itServer)) {
+                    println "Server Exited"
+                    status = ServerStatus.DOWN
+                    break
+                }
+
+                try {
+                    println "checking heartbeat"
+                    status = checkServerStatus()
+                    break
+                }
+                catch (ex) {
+                    logger.debug "${RED}Error accessing app health URL: ${ex.message}$NORMAL"
+                }
+            }
+
+            if (status == ServerStatus.TIMED_OUT) itServer.destroy()
+
+            if (status != ServerStatus.UP) {
+                throw new RuntimeException("Server failed to start up. Status: ${status}")
+            }
+        } finally {
+            println "server log file: ${logFile.text}"
+        }
+    }
+}
+
+task integrationTest(type: Test, dependsOn: jacocoSetup) {
+
+    String browser = System.getProperty("browser", 'chrome')
+    String grid = System.getProperty("selenium.hub", "")
+    boolean startServer = Boolean.valueOf("${System.getProperty('start.server', 'true')}")
+    boolean skipSelenium = Boolean.valueOf("${System.getProperty('skip.selenium', 'false')}")
+    boolean skipApi = Boolean.valueOf("${System.getProperty('skip.api', 'false')}")
+    boolean useGrid = grid != ""
+
+    if (!useGrid && !skipSelenium) {
+        switch (browser) {
+            case "phantom":
+                dependsOn getPhantomJs
+                break
+            case "chrome":
+                dependsOn updateChromedriver
+                break
+        }
+    }
+
+    systemProperties = [
+            'hercules.base.url'              : baseUrl,
+            'hercules.smtp.port'             : '1081',
+            'selenium.hub'                   : grid,
+            'browser'                        : browser,
+            'phantomjs.binary.path'          : "${getPhantomJs.phantomJsLocation}",
+            'webdriver.chrome.driver'        : "${updateChromedriver.driverLocation}",
+            'load.demo.data.before.each.test': 'false',
+            'local.server'                   : startServer
+    ]
+
+    outputs.upToDateWhen { false }
+
+    maxParallelForks = Integer.parseInt(System.getProperty("max.parallel.forks", "8"))
+
+    // run specific Integration test by name
+    if (System.properties['testName'] != null) {
+        include "**/${System.properties['testName']}.*"
+    } else {
+        // include all relevant integration tests
+        if (!skipApi) {
+            include '**/*IntegrationTest.*'
+        }
+
+        if (!skipSelenium) {
+            include '**/*SeleniumTest.*'
+        }
+    }
+
+    reports {
+        if (startServer || skipApi) {
+            html.destination "$buildDir/reports/integration-tests"
+            junitXml.destination "$buildDir/test-results/integration-tests"
+        } else {
+            html.destination "$buildDir/reports/$browser"
+            junitXml.destination "$buildDir/test-results/$browser"
+        }
+    }
+
+    if (startServer) {
+        binResultsDir = file("$buildDir/test-results/integration-tests/binary")
+    } else {
+        binResultsDir = file("$buildDir/test-results/$browser/binary")
+    }
+
+    doFirst {
+        if (branch.toLowerCase().startsWith("demo")) {
+            println "${CYAN}integration tests skipped because branch ${branch} start with demo"
+            throw new StopExecutionException("integration tests skipped because branch ${branch} start with demo")
+        }
+
+        if (startServer) {
+            println "${CYAN}integration tests server$NORMAL: starting a local server"
+            tasks.startIntegrationTestServer.execute()
+        } else {
+            println "${CYAN}integration tests server$NORMAL: using remote server at $GREEN$baseUrl$NORMAL, no local server is needed"
+            tasks.loadDemoData.execute()
+        }
+    }
+}
+
+task stopIntegrationTestServer {
+    doLast {
+        if (itServer != null) {
+            try {
+                def itReportPath = System.getProperty("sonar.jacoco.itReportPath")
+                if (itReportPath == null) {
+                    throw new IllegalStateException("must set sonar.jacoco.itReportPath")
+                }
+
+                def jacocoResults = new File(itReportPath)
+
+                println "${PINK}dumping Jacoco coverage info to $jacocoResults$NORMAL"
+                ant.taskdef(name: "jacocoDump", classname: "org.jacoco.ant.DumpTask", classpath: "$jacocoDir/lib/jacocoant.jar")
+
+                ant.jacocoDump(address: "localhost", port: jacocoPort, reset: false, destfile: jacocoResults, append: false)
+            } finally {
+                itServer.destroy()
+            }
+        }
+    }
+}
+
+enum ServerStatus {
+    UP, DOWN, TIMED_OUT
+}
+
+integrationTest.finalizedBy stopIntegrationTestServer
+
+//task testPathingJar(type: Jar) {
+//    appendix = "testPathing"
+//    doFirst {
+//        manifest.attributes(
+//                'Class-Path': sourceSets.test.runtimeClasspath.collect { it.toURI().toString() }.join(' ')
+//        )
+//    }
+//}
+//
+//integrationTest.dependsOn testPathingJar
+
+clean {
+    delete = []
+
+    def theList = buildDir?.listFiles(new FilenameFilter() {
+        @Override
+        boolean accept(File dir, String name) {
+            return name != "sonar"
+        }
+    })
+
+    if (theList != null) {
+        delete theList
+    }
+}

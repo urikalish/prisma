@@ -1,0 +1,10 @@
+@import "_flex-item";
+
+.generate-item-ratio-class(@n, @i: 1) when (@i =< @n) {
+  &.size-@{i} {
+    .flex(1 0 @i * 100% / @n);
+    max-width: @i * 100% / @n;
+  }
+
+  .generate-item-ratio-class(@n, (@i + 1));
+}

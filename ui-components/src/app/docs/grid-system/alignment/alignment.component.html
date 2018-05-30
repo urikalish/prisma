@@ -1,0 +1,237 @@
+<div class="row">
+  <div class="item">
+    <h4>
+      - Items Alignment
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      Items can be aligned in various ways, these classes can align content both in row & item components
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      - Horizontal alignment (Applied on the <strong>row</strong> component)
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="row no-padding">
+      <div class="item">
+        <label class="radio-input">
+          <input type="radio" name="horizontal-alignment" (click)="grid.selected.horizontal = 'default'"
+                 [checked]="grid.selected.horizontal === 'default' ? 'checked' : ''">
+          <span>Default</span>
+        </label>
+      </div>
+      <div class="item" *ngFor="let item of grid.alignment | slice:1">
+        <label class="radio-input">
+          <input type="radio" name="horizontal-alignment" (click)="grid.selected.horizontal = item">
+          <span>.h-{{item}}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container grid-visualization">
+      <div class="row h-{{grid.selected.horizontal}}">
+        <div class="item size-3">
+          .item.size-3
+        </div>
+        <div class="item size-2">
+          .item.size-2
+        </div>
+        <div class="item size-2">
+          .item.size-2
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre class="code prettyprint">
+&lt;div class="container"&gt;
+  &emsp;&lt;div class="row"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row h-center"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row h-end"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row h-space-between"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row h-space-around"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row h-space-evenly"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+&lt;/div&gt;
+          </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      - Vertical alignment (Applied on the <strong>row</strong> component)
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="row no-padding">
+      <div class="item">
+        <label class="radio-input">
+          <input type="radio" name="vertical-alignment" (click)="grid.selected.vertical = 'default'"
+                 [checked]="grid.selected.vertical === 'default' ? 'checked' : ''">
+          <span>Default</span>
+        </label>
+      </div>
+      <div class="item" *ngFor="let item of grid.alignment | slice:0:4">
+        <label class="radio-input">
+          <input type="radio" name="vertical-alignment" (click)="grid.selected.vertical = item">
+          <span>.v-{{item}}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container grid-visualization">
+      <div class="row v-{{grid.selected.vertical}}" style="height: 125px">
+        <div class="item size-3">
+          .item.size-3
+        </div>
+        <div class="item size-2">
+          .item.size-2
+        </div>
+        <div class="item size-3">
+          .item.size-3
+        </div>
+        <div class="item size-8">
+          .item.size-8
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre class="code prettyprint">
+&lt;div class="container"&gt;
+  &emsp;&lt;div class="row v-stretch"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row v-start"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row v-center"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row v-end"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+&lt;/div&gt;
+            </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      - Content alignment (Applied on the <strong>row</strong> component)
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="row no-padding">
+      <div class="item">
+        <label class="radio-input">
+          <input type="radio" name="content-alignment" (click)="grid.selected.content = 'default'"
+                 [checked]="grid.selected.content === 'default' ? 'checked' : ''">
+          <span>Default</span>
+        </label>
+      </div>
+      <div class="item" *ngFor="let item of grid.alignment">
+        <label class="radio-input">
+          <input type="radio" name="content-alignment" (click)="grid.selected.content = item">
+          <span>.content-{{item}}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <div class="container grid-visualization">
+      <div class="row content-{{grid.selected.content}}" style="height: 125px">
+        <div class="item size-3">
+          .item.size-3
+        </div>
+        <div class="item size-2">
+          .item.size-2
+        </div>
+        <div class="item size-3">
+          .item.size-3
+        </div>
+        <div class="item size-8">
+          .item.size-8
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre class="code prettyprint">
+&lt;div class="container"&gt;
+  &emsp;&lt;div class="row content-stretch"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-start"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-center"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-end"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-space-between"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-space-around"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+  &emsp;&lt;div class="row content-space-evenly"&gt;
+    &emsp;...
+  &emsp;&lt;/div&gt;
+&lt;/div&gt;
+            </pre>
+  </div>
+</div>

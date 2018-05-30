@@ -1,0 +1,47 @@
+@import "../variables";
+
+.color-picker {
+  height: @color-picker-height;
+
+  ::ng-deep .dropdown-container {
+    border-color: @color-picker-border-color;
+    display: inline-block;
+    width: @color-picker-width;
+    height: @color-picker-height;
+    min-width: @color-picker-width;
+    line-height: @color-picker-line-height;
+
+    .toggle-button {
+      padding: 0 !important;
+    }
+
+    .dropdown-toggle {
+      padding: 0 @color-picker-padding-right 0 @color-picker-padding-left !important;
+      height: @color-picker-height !important;
+    }
+
+    prism-list-item {
+      height: @color-picker-color-height * 2 !important;
+      line-height: @color-picker-color-height * 2 !important;
+    }
+    .prism-list-item {
+      padding: 0 @color-picker-padding-right 0 @color-picker-padding-left !important;
+      //height: @color-picker-color-height !important;
+    }
+
+    .content {
+      border-top: none !important;
+      border-color: @color-picker-border-color !important;
+      top: @color-picker-height - @dropdown-border-width !important;
+    }
+  }
+
+  .color {
+    border-radius: 50%;
+    width: @color-picker-color-width;
+    height: @color-picker-color-height;
+    display: inline-block;
+    //vertical-align: middle;
+  }
+}
+

@@ -1,0 +1,22 @@
+server:
+  port: 8443
+#  ssl:
+#    key-store: classpath:prism_keystore.p12
+#    key-password: password
+#    key-alias: prism
+#    key-store-type: PKCS12
+#    key-store-password: password
+spring:
+  datasource:
+    url: jdbc:h2:file:./build/db/h2;AUTO_SERVER=TRUE
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+authenticationConfiguration:
+  msgUrl: https://msgalb002tin.saas.hpe.com/
+  msgExtUrl: https://msgalb002tex.saas.hpe.com/
+  boLoginUrl: https://boalb002q.saas.hpe.com/
+  clientId: saas.integration.user@hp.com
+  clientSecret: aFG-HRhiqhRriPxlCtaagyIXOjNo61H2tlbZAO2J3Ho=
+  initString: jw7DLaVwaravvCj7eY4qf7_NqIsgcfrPCj3hkM9dLF8=

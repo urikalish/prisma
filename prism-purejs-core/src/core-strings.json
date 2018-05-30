@@ -1,0 +1,11 @@
+{
+  "//": "You can replace variables in strings by replacing $[VAR_INDEX]",
+  "eventsValidator": {
+    "blacklist": "The following events are not recommended for monitoring by Prism:",
+    "unknown": "The following events are not supported for monitoring by Prism:",
+    "whitelist": "The following events are allowed for monitoring by Prism:"
+  },
+  "prismStorageManager": {
+    "sessionId": "prism::sessionId"
+  }
+}
