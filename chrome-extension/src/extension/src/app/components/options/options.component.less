@@ -1,0 +1,52 @@
+@import "../../variables";
+
+@error-color: #ec4742;
+
+.options {
+  main {
+    font-size: @options-font-size !important;
+    margin: @options-margin-y @options-margin-x !important;
+
+    prism-features {
+      margin-bottom: 25px;
+    }
+
+    .error-message {
+      color: @error-color;
+    }
+
+    ::ng-deep prism-input {
+      margin-top: @options-margin-y;
+
+      &.invalid-input {
+        .prism-input {
+          border-color: @error-color !important;
+        }
+      }
+    }
+
+    ::ng-deep button {
+      margin: @options-margin-y 0 !important;
+      border-radius: 0 !important;
+    }
+    .save-button {
+      margin-left: @options-margin-x - 2 !important;
+      ::ng-deep button {
+        background-color: @brand-color;
+        color: white;
+      }
+    }
+
+    .clear-button {
+      margin-left: @options-margin-x - 2 !important;
+      ::ng-deep button {
+        background-color: @error-color;
+        color: white;
+
+        &:hover {
+          border-color: @error-color;
+        }
+      }
+    }
+  }
+}

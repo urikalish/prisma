@@ -1,0 +1,37 @@
+@import "../../variables";
+
+.recording {
+  prism-filterable-list {
+    flex: 0 1 200px !important;
+  }
+
+  ::ng-deep prism-input {
+
+    .prism-input {
+
+      background-color: white !important;
+      border: solid 1px transparent;
+      border-radius: 20px;
+      padding: 0 @input-padding-x !important;
+      height: @input-height !important;
+      line-height: @input-height !important;
+
+      input {
+        height: @input-height !important;
+        line-height: @input-height !important;
+        font-size: @input-font-size !important;
+      }
+
+      &:hover {
+        border-color: rgba(109, 173, 239, 0.89);
+      }
+    }
+  }
+}
+
+::ng-deep .list-on-top {
+  bottom: @input-height !important;
+  left: 16px !important;
+  right: 16px !important;
+}
+

@@ -1,0 +1,115 @@
+@intro-time: 0.6s;
+@loading-time: 2s;
+@spinner-size: 60px;
+@spinner-color: #0074f3;
+
+.loading-container {
+  background: rgba(255, 255, 255, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+
+  .spinner {
+    display: block;
+    width: @spinner-size;
+    height: @spinner-size;
+    background: transparent;
+    user-select: none;
+    animation: intro @intro-time 1 ease-in-out forwards;
+
+    .text {
+      position: absolute;
+
+      //width: content;
+      text-align: center;
+      bottom: -45px;
+      height: 35px;
+      font-family: monospace;
+
+      animation: text @intro-time*4 1 ease-in-out forwards;
+      color: #0c427d;
+      width: 250%;
+      left: -75%;
+      text-transform: uppercase;
+
+    }
+
+    .cube {
+      display: block;
+      position: absolute;
+      background: @spinner-color;
+      height: 20%;
+      width: 20%;
+      animation: cube @loading-time infinite ease-in-out;
+
+      //left portion
+      .cube-animation(1, 80%, 0, 0s + @intro-time);
+      .cube-animation(2, 80%, 20%, 0.1s + @intro-time);
+      .cube-animation(3, 60%, 0, 0.2s + @intro-time);
+      .cube-animation(4, 80%, 40%, 0.3s + @intro-time);
+      .cube-animation(5, 40%, 0, 0.4s + @intro-time);
+      .cube-animation(6, 80%, 60%, 0.5s + @intro-time);
+      .cube-animation(7, 20%, 0, 0.6s + @intro-time);
+
+      //right portion
+      .cube-animation(8, 60%, 80%, 0.6s + @intro-time);
+      .cube-animation(9, 0, 20%, 0.5s + @intro-time);
+      .cube-animation(10, 40%, 80%, 0.4s + @intro-time);
+      .cube-animation(11, 0, 40%, 0.3s + @intro-time);
+      .cube-animation(12, 20%, 80%, 0.2s + @intro-time);
+      .cube-animation(13, 0, 60%, 0.1s + @intro-time);
+      .cube-animation(14, 0, 80%, 0s + @intro-time);
+    }
+  }
+}
+
+.cube-animation(@index, @top, @left, @delay) {
+  &:nth-of-type(@{index}) {
+    top: @top;
+    left: @left;
+    animation-delay: @delay;
+  }
+}
+
+@keyframes cube {
+  0%, 15%, 85%, 100% {
+    transform: scale3D(1, 1, 1);
+    opacity: 1;
+  }
+  45%, 55% {
+    transform: scale3D(0, 0, 1);
+    opacity: 0;
+  }
+}
+
+@keyframes text {
+  0%, 15% {
+    transform: scale3D(0, 0, 1);
+    opacity: 0;
+  }
+
+  30%, 75% {
+    transform: scale3D(1, 1, 1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale3D(1, 1, 1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes intro {
+  0% {
+    transform: scale3D(0, 0, 1) rotate(-180deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale3D(1, 1, 1) rotate(0);
+    opacity: 1;
+  }
+}

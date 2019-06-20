@@ -1,0 +1,21 @@
+@import "../../variables";
+
+.alert {
+
+  main {
+    font-size: @options-font-size !important;
+    margin: @options-margin-y @options-margin-x !important;
+  }
+
+  .warning {
+    height: @warning-height;
+    width: @warning-width;
+    margin-right: @warning-margin-right;
+    background: url("../../../assets/images/warning.svg") center no-repeat;
+    background-size: contain;
+  }
+
+  .alert-text {
+    white-space: pre-line;
+  }
+}

@@ -1,0 +1,119 @@
+@import "../variables";
+
+@button-bg-color: #F5F5F5;
+@button-bg-hover-color: #e1e1e1;
+
+div.prism-filter {
+  font-size: 13px;
+
+  section {
+    position: absolute;
+  }
+
+  .selectedFieldName, .selectedFieldValue, .selectedField, .selectedValue {
+    border: solid 1px @border-normal-color;
+    padding: 1px 9px;
+  }
+
+  .selectedFieldValue {
+    padding-right: 6px;
+
+    label {
+      max-width: 90px;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    outline: none;
+    border: solid 1px @border-normal-color;
+    padding: 0;
+
+    &.add {
+      width: 26px;
+      height: 20px;
+      background-color: @button-bg-color;
+      padding: 0 4px;
+      background-image: @add-filter;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &:hover {
+        background-color: @button-bg-hover-color;
+      }
+    }
+
+    &.remove {
+      border: none;
+      padding: 0;
+      margin-left: 4px;
+      background-image: @delete-micro;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      width: 8px;
+      height: 8px;
+
+      &:hover {
+        background-color: @button-bg-hover-color;
+      }
+    }
+  }
+
+  div.fieldValues {
+
+    input {
+      outline: none;
+      border: solid 1px @border-normal-color;
+    }
+
+    label {
+      border-right-width: 0;
+    }
+  }
+
+  ul {
+    //min-height: 26px;
+
+    &.selectedFilters {
+      padding: 0;
+
+      li {
+        &.new-filter-button {
+          min-width: 100px;
+          min-height: @filterable-list-height;
+          margin-bottom: 5px;
+        }
+
+        &:not(.new-filter-button) {
+          margin-right: 5px;
+          margin-bottom: 5px;
+
+          label.selectedFieldName {
+            border-right-width: 0;
+          }
+        }
+      }
+    }
+
+    &:not(.selectedFilters) {
+      border: solid 1px @border-normal-color;
+
+      li {
+        padding: 1px 8px 2px 9px;
+        &:hover {
+          background-color: @list-item-hover-color;
+        }
+      }
+    }
+  }
+
+  .multi-button ::ng-deep button {
+    background-color: @focus-color;
+    color: white;
+  }
+
+  .content {
+    z-index: 3;
+  }
+}

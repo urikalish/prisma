@@ -1,0 +1,14 @@
+<div class="alert container disable-padding">
+  <popup-header [title]="level"
+                [showBrand]="false"
+                [showButtons]="false"
+                [showBackButton]="showBackButton">
+
+  </popup-header>
+  <main class="row flex-direction-col disable-padding">
+    <div class="item v-center flex-direction-row">
+      <span class={{level.toLowerCase()}}></span>
+      <span class="alert-text" [innerHTML]="text"></span>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,94 @@
+@import "../variables";
+
+.filterable-list {
+  span.bold {
+    font-weight: bold;
+  }
+
+  ::ng-deep {
+
+    .prism-input {
+      z-index: 2;
+      height: @filterable-list-height !important;
+      line-height: @filterable-list-height !important;
+      min-width: @filterable-list-width !important;
+
+      input {
+        padding: 0 @filterable-list-padding-right 0 @filterable-list-padding-left !important;
+        font-size: @filterable-list-font-size !important;
+        height: @filterable-list-height - 2px !important;
+        line-height: @filterable-list-height - 2px !important;
+      }
+
+      .new-item-button {
+        button {
+          padding: 2px !important;
+          height: auto;
+          min-width: unset;
+        }
+
+        .plus-icon {
+          height: 10px;
+          width: 10px;
+          background: @plus no-repeat center;
+        }
+      }
+    }
+
+    prism-list-item {
+      cursor: default;
+      height: @filterable-list-item-height;
+      line-height: @filterable-list-item-height;
+      user-select: none;
+
+      &.active {
+        li.prism-list-item {
+          background-color: @list-item-hover-color;
+        }
+      }
+
+      li.prism-list-item {
+        min-width: @filterable-list-width;
+        padding: 0 @filterable-list-padding-right !important;
+        height: @filterable-list-item-height;
+        line-height: @filterable-list-item-height;
+        font-size: @filterable-list-font-size;
+
+        prism-checkbox {
+          margin-right: 5px;
+          overflow: visible;
+        }
+      }
+    }
+  }
+
+  prism-list {
+    //display: block;
+    //border: solid 1px @filterable-list-border-color;
+  }
+
+  .content {
+    max-height: @filterable-list-item-height * 5;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    min-width: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    outline: none;
+    border: solid 1px @filterable-list-border-color;
+
+    &.list-on-bottom {
+      border-top: 0;
+      top: 20px;
+    }
+
+    &.list-on-top {
+      bottom: 20px;
+      border-bottom: 0;
+    }
+  }
+
+  //.prism-list {
+}

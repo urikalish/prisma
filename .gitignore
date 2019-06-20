@@ -5,5 +5,9 @@ node_modules/
 npm-debug.log
 out/
 dist/
+build/
 *.log
-prism-purejs-core/lib/index.html
+*.min.js
+ui-components/temp/index.bundle.js
+ui-components/temp/index.bundle.js.map
+prism.config

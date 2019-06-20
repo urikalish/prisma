@@ -1,0 +1,12 @@
+{
+  "name": "webpack-common-utils",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "file-system": "^2.2.2"
+  },
+  "module": "./index.js",
+  "main": "./index.js",
+  "files": [
+    "./src"
+  ]
+}

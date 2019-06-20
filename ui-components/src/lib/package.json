@@ -1,0 +1,14 @@
+{
+  "name": "ui-components",
+  "version": "0.0.1",
+  "repository": "",
+  "author": "Ohad Ben-Nun <eng.ohadb@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "peerDependencies": {
+    "@angular/common": "^5.2.0",
+    "@angular/core": "^5.2.0",
+    "@angular/forms": "^5.2.0",
+    "@angular/platform-browser": "^5.2.0"
+  }
+}

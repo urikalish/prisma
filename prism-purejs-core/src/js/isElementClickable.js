@@ -18,9 +18,10 @@ export default class IsElementClickable {
   /**
    * Check if a DOM element has a parent that is clickable
    * @param {Element} element - a DOM element to test
+   * @param {string} event - the current event fired
    * @return {Element} - the clickable parent, returns undefined if non found
    */
-  static findClickableParent(element) {
+  static findClickableParent(element, event) {
     let ret;
 
     for (let targetParent = element.parentElement;
@@ -28,7 +29,7 @@ export default class IsElementClickable {
          targetParent = targetParent.parentElement) {
       if (!!targetParent && !!targetParent.tagName) {
         // is element clickable
-        if (IsElementClickable.isClickable(targetParent)) {
+        if (IsElementClickable.isClickable(targetParent, event)) {
           ret = targetParent;
           break;
         }
@@ -42,12 +43,24 @@ export default class IsElementClickable {
    * Check if a DOM element is bound to any click event or is
    * a clickable element
    * @param {Element} element - a DOM element to test
+   * @param {string} event - the current event fired
    * @return {boolean} - was a click event bound to the given DOM element
    */
-  static isClickable(element) {
+  static isClickable(element, event) {
     return IsElementClickable.isClickableElement(element) ||
       IsElementClickable.wasClickRoleAttrFound(element) ||
-      IsElementClickable.isAngularClickEvent(element);
+      IsElementClickable.isPrismClickable(element, event);
+  }
+
+  /**
+   * Check if a DOM element is bound to any click event or is
+   * a clickable element
+   * @param {Element} element - a DOM element to test
+   * @param {string} event - the current event fired
+   * @return {boolean} - was a click event bound to the given DOM element
+   */
+  static isPrismClickable(element, event) {
+    return !!element.getAttribute(`data-prism-event--${event}`);
   }
 
   /**
@@ -68,26 +81,6 @@ export default class IsElementClickable {
         if (list[index] === elemRole) {
           return true;
         }
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Check if a DOM element is bound to an Angular click event
-   * @param {Element} element - a DOM element to test
-   * @return {boolean} - was a click event bound to the given DOM element
-   */
-  static isAngularClickEvent(element) {
-    let angularAttrs = [
-      'ng-click', 'data-ng-click',
-      'ng-mousedown', 'data-ng-mousedown',
-      'ng-mouseup', 'data-ng-mouseup'];
-
-    for (let i = 0; i < angularAttrs.length; i++) {
-      if (!!element.getAttribute(angularAttrs[i])) {
-        return true;
       }
     }
 
@@ -118,25 +111,6 @@ export default class IsElementClickable {
     }
 
     return isClickable;
-  }
-
-  /**
-   * Check if a DOM element is a jQuery clickable element
-   * @param {Element} element - a DOM element to test
-   * @return {boolean} - if clickable
-   */
-  static isJqueryClickable(element) {
-    if (!jQuery) {
-      return false;
-    } else {
-      let events = jQuery._data(element, 'events');
-
-      if (!!events) {
-        // console.log(events);
-        return !!events['click'] && events['click'].delegateCount !== undefined &&
-          events['click'].delegateCount === 0;
-      }
-    }
   }
 }
 

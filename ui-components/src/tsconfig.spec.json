@@ -1,20 +1,14 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/spec",
+    "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "commonjs",
-    "target": "es5",
-    "types": [
-      "jasmine",
-      "node"
-    ]
+    "module": "es2015",
+    "types": []
   },
-  "files": [
-    "test.ts"
-  ],
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
   ]
 }
+

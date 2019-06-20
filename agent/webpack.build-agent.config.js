@@ -4,7 +4,7 @@ let webpack = require('webpack');
 const BUILD_DIRECTORY = 'lib';
 const LIBRARY_NAME = 'prism-agent';
 const BUILD_VERSION = JSON.stringify(require('./package.json').version);
-const API_MOCKUP = true;
+// const API_MOCKUP = true;
 
 const babelLoader = {
   test: /.js$/,
@@ -15,7 +15,7 @@ const babelLoader = {
 
 const buildPackage = {
   entry: {
-    index: path.join(__dirname, 'src', 'agent.js')
+    index: [path.join(__dirname, 'src', 'agent.js')]
   },
   
   output: {
@@ -26,8 +26,7 @@ const buildPackage = {
   
   plugins: [
     new webpack.DefinePlugin({
-      __VERSION__: BUILD_VERSION,
-      __API_MOCKUP__: API_MOCKUP
+      __VERSION__: BUILD_VERSION
     }),
     new webpack.optimize.UglifyJsPlugin()
   ],

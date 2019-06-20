@@ -1,0 +1,197 @@
+<!-- Checkboxes -->
+<div class="row" id="ui-checkboxes">
+  <div class="item">
+    <h3>
+      Checkboxes
+    </h3>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      The checkbox component is used for boolean inputs
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      - Checkboxes can gain focus when tab is pressed.
+      <br>
+      - Checkboxes can respond to both spacebar & enter keys.
+      <br>
+      - Checkboxes can have 1 of 3 unique styles.
+      <br>
+      - 2-Way binding can be done with <strong>[(value)]="someVar"</strong>
+      <br>
+      - Checkboxes can emit when their state was changed with <strong>(change)="someMethod($event)"</strong>
+      where <strong>$event</strong> holds the current state
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      Default flavor: Checkbox
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item">
+    <prism-checkbox text="Default" [(value)]="checkboxes.checkbox.default"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox text="Checked" [(value)]="checkboxes.checkbox.checked"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox text="Text on left" textDirection="left"
+                    [(value)]="checkboxes.checkbox.left"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox text="Disabled" data-disabled="true"
+                    [(value)]="checkboxes.checkbox.disabled"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox [(value)]="checkboxes.checkbox.noText"></prism-checkbox>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre>
+{{ checkboxes.checkbox | json }}
+            </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre class="code prettyprint">
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox text=&quot;Default&quot; [(value)]=&quot;someVar&quot;&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox text=&quot;Checked&quot; [(value)]=&quot;someVar&quot;&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox text=&quot;Text on left&quot; [(value)]=&quot;someVar&quot;
+                       textDirection=&quot;left&quot;&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox text=&quot;Disabled&quot; [(value)]=&quot;someVar&quot;
+                       data-disabled=&quot;true&quot;&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox [(value)]=&quot;someVar&quot;&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+            </pre>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      Flavor: Toggle-round
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item">
+    <prism-checkbox flavor="toggle-round" text="Default"
+                    [(value)]="checkboxes.round.default"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox flavor="toggle-round" text="Checked"
+                    [(value)]="checkboxes.round.checked"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox flavor="toggle-round" text="Text on left" textDirection="left"
+                    [(value)]="checkboxes.round.left"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox flavor="toggle-round" text="Disabled" data-disabled="true"
+                    [(value)]="checkboxes.round.disabled"></prism-checkbox>
+  </div>
+  <div class="item">
+    <prism-checkbox flavor="toggle-round" [(value)]="checkboxes.round.noText"></prism-checkbox>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre>
+{{ checkboxes.round | json }}
+            </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre class="code prettyprint">
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox flavor="toggle-round" ...&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;
+            </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h6>
+      Flavor: Toggle-square
+    </h6>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item h-center">
+    <prism-checkbox flavor="toggle-square" text="Default"
+                    [(value)]="checkboxes.square.default"></prism-checkbox>
+  </div>
+  <div class="item h-center">
+    <prism-checkbox flavor="toggle-square" text="Checked"
+                    [(value)]="checkboxes.square.checked"></prism-checkbox>
+  </div>
+  <div class="item h-center">
+    <prism-checkbox flavor="toggle-square" text="Text on left" textDirection="left"
+                    [(value)]="checkboxes.square.left"></prism-checkbox>
+  </div>
+  <div class="item h-center">
+    <prism-checkbox flavor="toggle-square" text="Disabled" data-disabled="true"
+                    [(value)]="checkboxes.square.disabled"></prism-checkbox>
+  </div>
+  <div class="item h-center">
+    <prism-checkbox flavor="toggle-square" [(value)]="checkboxes.square.noText"></prism-checkbox>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+            <pre>
+{{ checkboxes.square | json }}
+            </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;
+    &lt;prism-checkbox flavor="toggle-square" ...&gt;&lt;/prism-checkbox&gt;
+  &lt;/div&gt;
+  ...
+&lt;/div&gt;
+</pre>
+  </div>
+</div>

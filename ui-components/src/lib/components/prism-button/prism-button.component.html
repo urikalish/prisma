@@ -1,0 +1,20 @@
+<button class="button row v-center h-center disable-padding no-margin nowrap"
+        [ngClass]="{
+          'with-image' : !!image,
+          'with-text' : !!text,
+          'with-border' : border,
+          'small' : size == 'small',
+          'medium' : size == 'medium',
+          'large' : size == 'large'
+         }">
+  <section class="item v-center flex-direction-row">
+    <ng-content></ng-content>
+  </section>
+  <span class="image item v-center"
+        [style.background-image]="'url(' + image + ')'"
+        *ngIf="!!image"></span>
+  <span class="text item v-center" *ngIf="!!text">{{text}}</span>
+  <section class="item v-center flex-direction-row">
+    <ng-content select="[button-end]"></ng-content>
+  </section>
+</button>

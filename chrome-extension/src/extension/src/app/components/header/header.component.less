@@ -1,0 +1,80 @@
+@import "../../variables";
+
+header {
+  padding-left: @header-padding-left;
+  height: @header-height;
+  background-color: @bg-color;
+  font-size: @header-font-size;
+
+  ::ng-deep {
+    prism-color-picker {
+      margin-right: 2px;
+      .dropdown-toggle {
+
+        border-color: white !important;
+      }
+    }
+
+    prism-button {
+      .image {
+        height: 20px !important;
+        width: 20px !important;
+      }
+    }
+  }
+
+  ::ng-deep prism-button {
+    .image {
+      height: 20px !important;
+      width: 20px !important;
+    }
+  }
+
+  ::ng-deep prism-button {
+    .image {
+      height: 20px !important;
+      width: 20px !important;
+    }
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .back-button {
+    height: @back-button-height;
+    width: @back-button-width;
+    margin-right: @back-button-margin-right;
+    background: url("../../../assets/images/back.svg") center no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
+
+  .brand {
+    height: @brand-height;
+    width: @brand-width;
+    margin-right: @brand-margin-right;
+    background: url("../../../assets/images/prism_logo_34.svg") center no-repeat;
+    background-size: contain;
+
+    animation: pulse 2.5s infinite ease-in-out;
+  }
+
+  .header-button {
+    height: @header-height - 4px;
+    cursor: pointer !important;
+    background: white;
+    width: @header-height - 4px;
+    margin-right: 2px;
+  }
+}
+
+@keyframes pulse {
+  0%, 15%, 25%, 100% {
+    transform: scale3D(1, 1, 1);
+  }
+
+  5%, 20% {
+    transform: scale3D(0.85, 0.85, 1);
+  }
+}

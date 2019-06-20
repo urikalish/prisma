@@ -1,3 +1,5 @@
+@import "mixins/_scrollbar";
+
 .no-padding {
   padding: 0 !important;
 }
@@ -30,15 +32,21 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  display: inline !important;
 }
 
-.background-block {
-  z-index: 1;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: default;
+* {
+  .scrollbars(@size: 6px, @foreground-color: #afafaf, @background-color: #eaeaea);
 }
 
+//
+//.background-block {
+//  z-index: 1;
+//  position: fixed;
+//  top: 0;
+//  bottom: 0;
+//  right: 0;
+//  left: 0;
+//  cursor: default;
+//}
+//

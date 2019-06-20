@@ -1,14 +1,15 @@
 {
-  "name": "Visual Test Coverage",
-  "options_page": "options.html",
+  "name": "PRiSMA",
   "background": {
-    "scripts": [
-      "background_script.bundle.js"
-    ]
+    "page": "extension/index.html?page=background",
+    "persistent": true
+  },
+  "options_ui": {
+    "page": "extension/index.html?page=extension-options"
   },
   "browser_action": {
     "default_icon": "assets/prism_logo_16.png",
-    "default_popup": "popup/index.html"
+    "default_popup": "extension/index.html?page=popup"
   },
   "icons": {
     "16": "assets/prism_logo_16.png",
@@ -22,12 +23,24 @@
         "https://*/*"
       ],
       "js": [
-        "content_script.bundle.js"
-      ]
+        "aut-js-injector.js",
+        "content-script-octane.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
-  "permissions": ["activeTab"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "*://*/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "web_accessible_resources": [
+    "injected-to-aut-scope.bundle.js"
+  ],
   "manifest_version": 2,
-  "version": "0.0.1",
+  "version": "0.0.3",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

@@ -6,6 +6,9 @@
 import ElementCommon from './elementCommon';
 import Sanitizer from './sanitizer';
 
+const IGNORE_DYNAMIC_CLASSES = true;
+const VALID_SELECTOR_REGEX = /^(?!(\d|--|-\d))\S+$/;
+
 /** eslint "require-jsdoc": ["error", {
  "require": {
     "FunctionDeclaration": true,
@@ -14,19 +17,6 @@ import Sanitizer from './sanitizer';
  }
  }]*/
 export default class ElementSelectorBuilder {
-  /**
-   * Check if element is unique in the document (current page)
-   * @param {string} stringSelector - the element's string selector
-   * @return {boolean} - is element unique
-   */
-  static isSelectorUnique(stringSelector) {
-    let ret;
-
-    ret = document.body.querySelectorAll(stringSelector.replace(/:nth-child\(\d+\)/g, '')).length === 1;
-
-    return ret;
-  }
-
   /**
    * build CSS attributes selector
    * @param {object} attributes - the DOM element to check
@@ -53,7 +43,13 @@ export default class ElementSelectorBuilder {
     let ret = '';
 
     ret += `${classes.split(/\s+/).map((str) => {
-      return str.trim().length !== 0 ? `.${str}` : '';
+      let ret = '';
+
+      if (VALID_SELECTOR_REGEX.test(str)) {
+        ret = `.${str}`;
+      }
+
+      return ret;
     }).join('')}`;
 
     return ret;
@@ -68,18 +64,26 @@ export default class ElementSelectorBuilder {
     let ret = {};
 
     ret.tagName = element.tagName.toLowerCase();
+    ret.nthPosition = ElementSelectorBuilder.elementNthPosition(element);
 
     if (!!element.attributes) {
       ret.attributes = {};
 
       for (let i = 0; i < element.attributes.length; i++) {
-        let key = element.attributes[i].name;
-        let value = Sanitizer.sanitize(element.attributes[i].value);
-        // let value = element.attributes[i].value;
-        switch (key.toLowerCase()) {
+        // console.log(element.attributes);
+        const key = element.attributes[i].name.toLowerCase();
+        const value = Sanitizer.sanitize(element.attributes[i].value).trim();
+
+        switch (key) {
           case 'id':
+            if (VALID_SELECTOR_REGEX.test(value)) {
+              ret[key] = value;
+            }
+
+            break;
           case 'class':
             ret[key] = value;
+
             break;
 
           default:
@@ -88,11 +92,6 @@ export default class ElementSelectorBuilder {
       }
     }
 
-    ret.nthPosition = ElementSelectorBuilder.elementNthPosition(element);
-
-    // if (!!element.innerText) {
-    //   ret.innerText = element.innerText.slice(0, 255);
-    // }
 
     return ret;
   }
@@ -104,20 +103,29 @@ export default class ElementSelectorBuilder {
    */
   static buildSelectorString(element) {
     let selectors = ElementSelectorBuilder.buildSelectorsObject(element);
-    let ret = selectors.tagName;
+
+    let ret = '';
 
     if (!!selectors.id) {
-      ret += `#${selectors.id}`;
+      ret = `#${selectors.id}`;
     } else if (!!selectors.class) {
-      ret += `${ElementSelectorBuilder.buildClassSelector(selectors.class)}:nth-child(${selectors.nthPosition})`;
-      // } else if (!!selectors.attributes) {
-      //   ret += ElementSelectorBuilder.buildAttributesSelector(
-      // selectors.attributes) +
-      //     `:nth-child(${selectors.nthPosition})`;
+      if (IGNORE_DYNAMIC_CLASSES) {
+        const staticClasses = ElementSelectorBuilder.filterDynamicClasses(selectors.class);
+
+        // If all classes are dynamic, use tag name
+        if (staticClasses.length === 0) {
+          ret = `${selectors.tagName}:nth-child(${selectors.nthPosition})`;
+        } else {
+          ret = `${ElementSelectorBuilder.buildClassSelector(staticClasses)}:nth-child(${selectors.nthPosition})`;
+        }
+      } else {
+        ret = `${ElementSelectorBuilder.buildClassSelector(selectors.class)}:nth-child(${selectors.nthPosition})`;
+      }
     } else {
-      ret += `:nth-child(${selectors.nthPosition})`;
+      ret = `${selectors.tagName}:nth-child(${selectors.nthPosition})`;
     }
 
+    // console.log('for element (OUT): ', element, '\nselector: ', ret, '\nobject: ', selectors);
     return ret;
   }
 
@@ -143,7 +151,6 @@ export default class ElementSelectorBuilder {
 
       // build parents path
       for (let i = 0; i < depth; i++) {
-        // is element clickable
         ret = `${ElementSelectorBuilder.buildSelectorString(parents[i])} > ${ret}`;
 
         if (!!parents[i].id) {
@@ -175,27 +182,20 @@ export default class ElementSelectorBuilder {
   }
 
   /**
-   * Check if element is unique in the document (current page)
-   * @param {object} selectorsObject - the element's selectors
-   * @return {boolean} - is element unique
+   * filter the dynamic classes
+   * @param {string} classes - the current element classes
+   * @return {string} - returns only static classes
    */
-  static isElementUnique(selectorsObject) {
-    let ret;
-    // let selectors = ElementCommon.buildSelectorsObject(element);
+  static filterDynamicClasses(classes) {
+    // get detected dynamic classes from body element
+    const dynamicClasses = document.body.getAttribute('data-prism-dynamic-class') || '';
 
-    if (!!selectorsObject.id) { // check by id
-      ret = document.body.querySelectorAll(
-          `[id="${selectorsObject.id}"]`).length === 1;
-    } else if (!!selectorsObject.class) { // check by classes
-      ret = document.body.querySelectorAll(
-          `[class="${selectorsObject.class}"]`).length === 1;
-    } else if (!!selectorsObject.attributes) { // check by attributes
-      ret = document.body.querySelectorAll(selectorsObject.tagName +
-          ElementSelectorBuilder.buildAttributesSelector(selectorsObject.attributes)).length === 1;
-    } else { // by tag only
-      ret = document.body.querySelectorAll(selectorsObject.tagName).length === 1;
-    }
+    const dynamicArray = dynamicClasses.split(/\s+/);
+    const elementClassesArray = classes.split(/\s+/);
 
-    return ret;
+    // filter dynamic classes
+    return elementClassesArray.filter((className) => {
+      return !dynamicArray.includes(className);
+    }).join(' ');
   }
 }

@@ -1,0 +1,33 @@
+<div class="activation container disable-padding">
+  <popup-header [title]="'PRiSMA'" [showBrand]="true" [showButtons]="false"></popup-header>
+
+  <main class="row flex-direction-col disable-padding">
+    <div *ngIf="!!state.get('autURL'); then domainChanged else firstTimeInject"></div>
+    <ng-template #domainChanged>
+      <div class="item v-center flex-direction-row">
+        <span class="warning"></span>
+        <span>
+          PRiSMA is already recording on <strong>{{state.get('autURL')}}</strong>.
+          <br/>
+          You can only record on one application at a time.
+           <br/>
+          <strong>{{activeURL}}</strong> is now open.
+        </span>
+      </div>
+    </ng-template>
+    <ng-template #firstTimeInject>
+      <div class="item flex-direction-row">
+        <span>
+          To view existing test coverage or create a new PRiSMA recording, open the application you are testing.
+        <br/>
+          <strong>{{activeURL}}</strong> is now open.
+        </span>
+      </div>
+    </ng-template>
+    <div class="row h-end">
+      <prism-button class="item size-3"
+                    text="Record on current application"
+                    (click)="injectAgent()"></prism-button>
+    </div>
+  </main>
+</div>

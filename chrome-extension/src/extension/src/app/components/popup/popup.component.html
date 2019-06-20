@@ -1,0 +1,68 @@
+<div class="container disable-padding" [detectChanges]="backgroundService.action$">
+    <popup-header [title]="'PRiSMA'" [showBrand]="true" [showButtons]="true"></popup-header>
+
+    <main class="row flex-direction-col disable-padding">
+      <prism-dropdown class="item" [selectedIndex]="state.get('selectedPresetIndex') || 0" prismListNavigation>
+        <prism-list>
+          <prism-list-item *ngFor="let preset of state.get('presets'); let i = index"
+                           [label]="preset.label"
+                           (click)="onPresetSelected(i)">
+          <span class="coverage-icon">
+            <span class="production"
+                  [ngClass]="'disabled'"></span>
+            <span class="testing">
+              <span class="manual"
+                    [ngClass]="preset.environments[0]?.isSelected ? '' : 'disabled'"></span>
+              <span class="automation"
+                    [ngClass]="preset.environments[1]?.isSelected ? '' : 'disabled'"></span>
+            </span>
+          </span>
+          </prism-list-item>
+        </prism-list>
+      </prism-dropdown>
+
+      <div class="setting item"
+           *ngFor="let environment of state.get('presets', presetIndex, 'environments'); let j = index"
+           [attr.data-disabled]="j !== 0">
+        <div class="setting-header row h-space-between no-padding no-margin v-center">
+          <prism-checkbox class="item"
+                          [ngClass]="{'no-opacity' : environment.isSelected}"
+                          [text]="environment.label"
+                          [value]="environment.isSelected"
+                          (valueChange)="toggleEnvSelected($event, j)"
+                          [attr.data-disabled]="true">
+          </prism-checkbox>
+          <div class="row v-center" *ngIf="environment.isSelected">
+            <prism-checkbox class="item v-center"
+                            [ngClass]="{'no-opacity' : environment.isSelected}"
+                            [text]="environment.isCovered ? 'Covered' : 'Not Covered'"
+                            textDirection="left"
+                            [value]="environment.isCovered"
+                            (click)="toggleEnvCovered(j)"
+                            [flavor]="'toggle-square'"
+                            [attr.data-disabled]="true">
+            </prism-checkbox>
+          </div>
+
+        </div>
+        <div class="setting-filters row v-center">
+          <div class="item" *ngIf="environment.isSelected">
+            <prism-filter class="item"
+                          [filtersList]="state.get('availableFilters')"
+                          [filterValues]="backgroundService.selectedFilterValues"
+                          [preventDuplicates]="false"
+                          [selectedFilters]="getEnvironmentFilters(j)"
+                          (onFieldSelected)="onFieldSelected($event)"
+                          (onFiltersChanged)="onFiltersChanged($event, j)"></prism-filter>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <footer class="row v-center">
+      <recording class="container disable-padding"></recording>
+    </footer>
+</div>
+
+
+

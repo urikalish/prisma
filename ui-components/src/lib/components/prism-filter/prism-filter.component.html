@@ -1,0 +1,51 @@
+<div class="row disable-padding no-margin prism-filter"
+     tabindex="0"
+     (keyup.esc)="resetNewFilter()">
+
+  <!-- Selected filters -->
+  <div class="item">
+    <ul class="selectedFilters row">
+      <!-- SELECTED FILTERS -->
+      <li class="item no-padding" *ngFor="let item of _selectedFilters; index as i">
+        <div class="row disable-padding">
+          <label class="item selectedFieldName">{{item.field?.label}}</label>
+          <span class="item selectedFieldValue">
+          <div [attr.data-tooltip]="item.value" class="row disable-padding v-center">
+            <label class="item ellipsis">{{item.value}}</label>
+            <button class="item remove" (click)="removeFilter(i)">
+            </button>
+          </div>
+        </span>
+        </div>
+      </li>
+
+      <!-- New filter -->
+      <li class="item new-filter-button no-padding" prismToggle (clickOutside)="resetNewFilter()">
+        <button class="add"
+                (click)="addNewFilter()"
+                *ngIf="!_addingNewFilter" #toggleButton
+                [attr.data-disabled]="filtersList?.length === 0">
+        </button>
+        <section class="content" #toggleContent>
+          <prism-filterable-list class="fieldNamesList" *ngIf="_addingNewFilter && !_newFilterField"
+                                 [items]="filtersList" [focus]="true" [queryKey]="'label'"
+                                 (onItemSelected)="selectFieldForNewFilter($event)">
+          </prism-filterable-list>
+          <div class="row disable-padding v-start nowrap fieldValues" *ngIf="_addingNewFilter && !!_newFilterField">
+            <label class="item selectedField">{{_newFilterField.label}}</label>
+            <prism-filterable-list class="item"
+                                   [items]="_filtersValues" [focus]="true"
+                                   (onItemSelected)="selectValueForNewFilter($event)"
+                                   (multiSelectedChange)="selectValueForNewMultiFilter($event)"
+                                   [multi]="multi">
+            </prism-filterable-list>
+            <prism-button class="item multi-button"
+                          *ngIf="multi && _addingNewFilter && !!_newFilterField"
+                          (click)="acceptMultiSelection()" [text]="'OK'"
+                          [attr.data-disabled]="!_newFilterValue || _newFilterValue?.length === 0"></prism-button>
+          </div>
+        </section>
+      </li>
+    </ul>
+  </div>
+</div>

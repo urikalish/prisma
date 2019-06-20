@@ -1,0 +1,8 @@
+<div prismToggle [isToggled]="toggleVariable" (isToggledChange)="toggleCheckbox($event)"
+     classWhenToggled="checked-state"
+     class="prism-{{flavor}}" role="checkbox">
+  <label class="checkbox" #toggleButton prismTabbableInput>
+    <span class="checkbox-input" #toggleContent role="checkbox"></span>
+    <span class="checkbox-text {{textDirection}}" *ngIf="!!text">{{text}}</span>
+  </label>
+</div>

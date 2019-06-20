@@ -1,0 +1,19 @@
+<li class="prism-list-item item flex-direction-row v-center h-start nowrap" role="menuitem" #item>
+  <!--<span class="item flex-direction-row no-padding nowrap ellipsis">-->
+  <!--<span>-->
+  <!--<span class="ellipsis">-->
+  <span class="item flex-direction-row no-padding v-center fit-to-content">
+    <ng-content></ng-content>
+  </span>
+
+  <span class="item v-center ellipsis flex-direction-row" *ngIf="!!label" #itemContent>
+    <span>
+      {{label}}
+    </span>
+  </span>
+
+  <span class="item flex-direction-row no-padding v-center">
+    <ng-content select="[item-end]"></ng-content>
+  </span>
+</li>
+

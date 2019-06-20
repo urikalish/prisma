@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "prism",
       "styles": [
-        "styles.less"
+        "styles.less",
+        "global-styles/index.less"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

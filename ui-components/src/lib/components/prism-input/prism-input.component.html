@@ -1,0 +1,12 @@
+<div class="prism-input row disable-padding disable-margin nowrap">
+  <section class="item v-center flex-direction-row">
+    <ng-content></ng-content>
+  </section>
+  <input #input class="item auto-width ellipsis"
+         placeholder={{placeholder}}
+         [ngModel]="value"
+         (ngModelChange)="value = $event"/>
+  <section class="item v-center flex-direction-row">
+    <ng-content select="[input-end]"></ng-content>
+  </section>
+</div>

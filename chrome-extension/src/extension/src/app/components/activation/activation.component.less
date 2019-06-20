@@ -1,0 +1,54 @@
+@import "../../variables";
+
+.activation {
+  //header {
+  //  padding-left: @header-padding-left;
+  //  height: @header-height;
+  //  background-color: @bg-color;
+  //  font-size: @header-font-size;
+  //
+  //  ul {
+  //    list-style: none;
+  //  }
+  //
+  //  .brand {
+  //    height: @brand-height;
+  //    width: @brand-width;
+  //    margin-right: @brand-margin-right;
+  //    background-image: url("../../../assets/images/prism_logo_34.svg");
+  //    background-position: center;
+  //    background-repeat: no-repeat;
+  //    background-size: contain;
+  //  }
+  //}
+
+  main {
+    font-size: @activation-font-size;
+    margin-left: @activation-margin-left !important;
+    margin-right: @activation-margin-right !important;
+    margin-top: @activation-margin-top !important;
+
+    .warning {
+      height: @warning-height;
+      width: @warning-width;
+      margin-right: @warning-margin-right;
+      //background-image: url("../../../assets/images/warning.svg");
+      background: url("../../../assets/images/warning.svg") center no-repeat;
+      //background-position: center;
+      //background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    ::ng-deep button {
+      margin: @inject-btn-margin-y 0 !important;
+      border-radius: 0 !important;
+      color: white;
+      background-color: @brand-color;
+
+      //&:hover {
+      //  border-color: @ho
+      //}
+    }
+  }
+}
+

@@ -23,7 +23,7 @@ const rawLoader = {
 const testEnv = {
   entry: {
     // index: path.join(__dirname, 'src', 'index.js'),
-    test: ["whatwg-fetch", "babel-polyfill", path.join(__dirname, 'src', 'test.js')]
+    test: [path.join(__dirname, 'src', 'test.js')]
   },
   
   output: {

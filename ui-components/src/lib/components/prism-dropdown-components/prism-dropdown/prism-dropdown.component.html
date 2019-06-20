@@ -1,0 +1,28 @@
+<!--<div class="dropdown-container container disable-padding v-stretch" prismToggle role="combobox" aria-expanded="true">-->
+<div class="dropdown-container row no-padding v-stretch no-margin"
+     role="combobox" aria-expanded="true"
+     (clickOutside)="toggleTo(false)">
+  <!--<div class="background-block" #showWhenOpened #toggleOffButton></div>-->
+  <!--<div class="background-block" *ngIf="isOpened" (click)="toggleTo(false)"></div>-->
+
+  <!--<div class="dropdown-toggle row disable-padding disable-margin v-center nowrap" #toggleButton prismTabbableInput-->
+  <div class="dropdown-toggle item auto-width flex-direction-row no-padding v-center h-space-between"
+       prismTabbableInput
+       (click)="toggle()">
+
+    <span *ngIf="!selectedElement" class="item ellipsis toggle-display-label">{{displayedLabel}}</span>
+    <span *ngIf="!!selectedElement"
+          class="item auto-width flex-direction-row toggle-display-label v-center" [innerHTML]="selectedElement">
+      <!--<span class="ellipsis" [innerHTML]="selectedElement"></span>-->
+    </span>
+
+    <div class="item fit-to-content h-center toggle-display-button">
+      <span class="toggle-button toggle-button-down" *ngIf="!isOpened"></span>
+      <span class="toggle-button toggle-button-up" *ngIf="isOpened"></span>
+    </div>
+  </div>
+  <!--<div class="content nowrap" #toggleContent #toggleOffButton>-->
+  <div class="item no-padding content auto-width" *ngIf="isOpened" (click)="toggleTo(false)">
+    <ng-content></ng-content>
+  </div>
+</div>

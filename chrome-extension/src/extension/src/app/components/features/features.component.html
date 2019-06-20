@@ -1,0 +1,12 @@
+<div class="row">
+  <p>Features:</p>
+</div>
+
+<ul class="row">
+  <li *ngFor="let feature of features.featuresList" class="item">
+    <prism-checkbox [text]="feature.name"
+                    [value]="feature.isOn"
+                    (click)="features.toggleFeature(feature.name)">
+    </prism-checkbox>
+  </li>
+</ul>

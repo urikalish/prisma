@@ -1,0 +1,7 @@
+# All
+**/*
+
+# But
+!lib/**
+!readme.md
+!package.json

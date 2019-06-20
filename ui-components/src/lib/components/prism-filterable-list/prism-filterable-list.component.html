@@ -1,0 +1,56 @@
+<div class="filterable-list"
+     prismListNavigation
+     [stayOnItemAfterSelection]="multi"
+     (clickOutside)="setVisible(false)">
+  <prism-input placeholder="{{placeholder}}"
+               [ngModel]="query"
+               (ngModelChange)="queryChanged($event)"
+               (keydown.arrowdown)="setVisible(true)"
+               (keydown.arrowup)="setVisible(true)"
+               (click)="setVisible(true)"
+               #input>
+    <prism-button class="new-item-button" *ngIf="isNewItemVisible"
+                  [border]="false"
+                  size="small"
+                  (click)="newItemSelected($event)" input-end>
+      <span class="plus-icon"></span>
+    </prism-button>
+  </prism-input>
+
+  <prism-list *ngIf="hideList ? isVisible : true"
+              class="content"
+              [ngClass]="{'list-on-top'    : openList === 'top',
+                       'list-on-bottom' : openList === 'bottom'}">
+    <prism-list-item *ngIf="items === null && allowLoadingItem"
+                     [label]="'Loading...'" data-disabled="true">
+    </prism-list-item>
+
+    <ng-container *ngIf="items !== null">
+      <prism-list-item *ngIf="(items | filter:queryKey:query).length === 0"
+                       [label]="'No results'" data-disabled="true">
+      </prism-list-item>
+
+      <prism-list-item *ngFor="let item of items | filter:queryKey:query; index as i"
+                       (click)="multi ? itemMultiSelected(item) : itemSelected(item)">
+          <span class="row v-center nowrap no-padding no-margin" item-end>
+            <prism-checkbox class="item fit-to-content no-padding"
+                            [value]="_multiSelection.indexOf(item) !== -1" *ngIf="multi">
+            </prism-checkbox>
+            <span class="item no-padding"
+                  *ngFor="let subString of item
+                          | itemDisplayName:queryKey
+                          | boldQuery:query;
+                          first as isFirst
+                          last as isLast"
+                  [ngClass]="{
+                  'fit-to-content': isLast === false,
+                  'ellipsis': isLast === true,
+                  'bold': !isFirst && !isLast
+                   }">
+              {{subString}}
+            </span>
+          </span>
+      </prism-list-item>
+    </ng-container>
+  </prism-list>
+</div>

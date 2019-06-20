@@ -8,25 +8,11 @@
  *    3. Publishing the events collected to an external data source
  *    4.
  */
-import {
-  AUTConfigurations,
-  DetectBrowser,
-  DomEventHandler,
-  EventsValidator,
-  PrismElementModel,
-  PrismEvents,
-  PrismEventsHandler
-} from "./index";
+import {DomEventHandler, EventsValidator, PrismElementModel, PrismEvents, PrismEventsHandler} from './index';
 
-import {agent as strings} from "./agent-strings.json";
+import {agent as strings} from './agent-strings.json';
 
-// let ctAPI;
-//
-// if (__API_MOCKUP__) {
-//   ctAPI = require('./js/mockups/controlTowerAPI');
-// } else {
-//   console.log('loaded real API');
-// }
+const NEW_EVENT_PATH = '/api/events';
 
 /** eslint "require-jsdoc": ["error", {
  "require": {
@@ -38,30 +24,27 @@ import {agent as strings} from "./agent-strings.json";
 export default class PrismAgent {
   /**
    * Creates a new Prism Agent
-   * @param {string} appName
-   * @param {string} environment - The environment the agent is deployed on
-   * @param {string} product - ALM / Octane
-   * @param {string} productURL
-   * @param {string} tenantID
-   * @param {string} ctClient - client data for Control Tower
-   * @param {string} ctSecret - client data for Control Tower
+   * @param {string} baseURL - Prism Event Analyzer URL
    */
-  constructor({appName, environment, product, productURL, tenantID, ctClient, ctSecret}) {
+  constructor({baseURL}) {
     // init Prism agent
+    this._trackedEvents = [];
+    this._baseURL = baseURL;
+
     this._didPrismEventInited = false;
     this.initPrismEvents();
     this.initFreshRun();
-    
+
     // the aut configurations
-    this._aut = new AUTConfigurations({appName, environment, product, productURL, tenantID, ctClient, ctSecret});
-    
+    // this._aut = new AUTConfigurations({appName, environment, product, productURL, tenantID, ctClient, ctSecret});
+
     // gather the client's details
-    this._clientBrowser = DetectBrowser.clientBrowser();
-    
+    // this._clientBrowser = DetectBrowser.clientBrowser();
+
     // set default run mode to user interaction
     this.changeAgentRunMode(PrismElementModel.runUser);
-    
-    
+
+
     PrismEventsHandler.fireEvent({
       event: PrismEvents.notifyAgentLoaded,
     });
@@ -71,31 +54,25 @@ export default class PrismAgent {
     //   ctClient: ctClient,
     //   ctSecret: ctSecret
     // });
-    
+
     // console.log(this._ctAPI.getToken());
-    
+
     console.log(strings.loaded.replace('$0', __VERSION__));
   }
-  
+
   /**
    * The entry-point for creating a new agent for the AUT
-   * @param {string} appName
-   * @param {string} environment - The environment the agent is deployed on
-   * @param {string} product - ALM / Octane
-   * @param {string} productURL
-   * @param {string} tenantID
-   * @param {string} ctClient - client data for Control Tower
-   * @param {string} ctSecret - client data for Control Tower
+   * @param {string} baseURL - Prism Event Analyzer URL
    * @return {PrismAgent}
    */
-  static initAgentInstance({appName, environment, product, productURL, tenantID, ctClient, ctSecret}) {
+  static initAgentInstance({baseURL}) {
     if (!this._agent) {
-      this._agent = new PrismAgent({appName, environment, product, productURL, tenantID, ctClient, ctSecret});
+      this._agent = new PrismAgent({baseURL});
     }
-    
+
     return this._agent;
   }
-  
+
   /**
    * Initialize Prism events for the agent when Prism extension is found
    */
@@ -106,7 +83,7 @@ export default class PrismAgent {
       callback: (event) => {
         if (!this._didPrismEventInited) {
           console.log('Prism extension detected');
-          
+
           // Change agent's mode to manual
           PrismEventsHandler.onEvent({
             event: PrismEvents.setAgentRecordingModeToManual,
@@ -114,7 +91,7 @@ export default class PrismAgent {
               this.changeAgentRunMode(PrismElementModel.runManual);
             },
           });
-          
+
           // Send the AUT data to the requester
           PrismEventsHandler.onEvent({
             event: PrismEvents.requestAUTData,
@@ -125,18 +102,18 @@ export default class PrismAgent {
               });
             },
           });
-          
+
           // Send the AUT tracked events to the requester
           PrismEventsHandler.onEvent({
             event: PrismEvents.requestTrackedEvents,
             callback: (event) => {
               PrismEventsHandler.fireEvent({
                 event: PrismEvents.respondTrackedEvents,
-                data: this._aut.trackedEvents,
+                data: this._trackedEvents,
               });
             },
           });
-          
+
           // Send the AUT tracked events to the requester
           PrismEventsHandler.onEvent({
             event: PrismEvents.requestCapturedEvents,
@@ -147,7 +124,7 @@ export default class PrismAgent {
               });
             },
           });
-          
+
           // Set agent's run tags from an outer source
           PrismEventsHandler.onEvent({
             event: PrismEvents.setAgentTags,
@@ -159,7 +136,7 @@ export default class PrismAgent {
       },
     });
   }
-  
+
   /**
    * For testing messaging
    */
@@ -168,19 +145,18 @@ export default class PrismAgent {
     PrismEventsHandler.fireEvent({event: PrismEvents.setAgentRecordingModeToManual});
     PrismEventsHandler.fireEvent({event: PrismEvents.setAgentTags, data: ['tag1', 'tag2']});
   }
-  
+
   /**
    * Init the agent for a fresh run
    */
   initFreshRun() {
     // the browser DOM events
     this._capturedEvents = [];
-    this._runStep = 0;
-    
+
     // meta-data
     this._eventTags = undefined;
   }
-  
+
   /**
    * Change the run mode of the agent
    * @param {string} mode
@@ -188,27 +164,28 @@ export default class PrismAgent {
   changeAgentRunMode(mode) {
     this._runMode = mode;
   }
-  
+
   /**
    * Handles an event fired in the AUT
    * @param {Event} event
    */
   eventHandler(event) {
-    this._runStep++;
+    // this._runStep++;
     let prismElement = new PrismElementModel(event);
-    
-    prismElement.applyAUTData(this._aut.autData);
-    prismElement.applyBrowserData(this._clientBrowser);
+
+    // prismElement.applyAUTData(this._aut.autData);
+    // prismElement.applyBrowserData(this._clientBrowser);
     prismElement.applyRunMode(this._runMode);
-    prismElement.applyRunStep(this._runStep);
-    
+    // prismElement.applyRunStep(this._runStep);
+
     if (!!this._eventTags) {
       prismElement.applyTags(this._eventTags);
     }
-    
-    this._capturedEvents.push(prismElement);
+
+    this.sendEventToPrismAPI(this._baseURL, prismElement._model);
+    // this._capturedEvents.push(prismElement);
   }
-  
+
   /**
    * Apply the DOM-events listeners for Prism Agent
    * @param {Array} events
@@ -216,34 +193,67 @@ export default class PrismAgent {
   listenToEvents(events) {
     let validEvents = EventsValidator.validateEventsArray(events);
     console.log(`${strings.monitoringEvents}\n${validEvents.toString()}`);
-    
+
     // save the events in the AUT configurations
-    this._aut.trackedEvents = validEvents;
-    
-    for (let i = 0; i < validEvents.length; i++) {
+    this._trackedEvents = validEvents;
+
+    // for (let i = 0; i < validEvents.length; i++) {
+    this._trackedEvents.forEach((event) => {
       DomEventHandler.bindEvent({
-        event: validEvents[i],
+        event: event,
         element: document.body,
         callback: this.eventHandler.bind(this),
       });
+    });
+  }
+
+  // /**
+  //  * Extends Prism functionality - Allows to declare CSS classes to represent user clickable elements
+  //  * @param {Array} classes
+  //  */
+  // declareClickableClasses(classes) {
+  //   this._aut.clickableClasses = classes;
+  // }
+  //
+  // /**
+  //  * Extends Prism functionality - Allows to declare CSS classes to represent user meaningless classes
+  //  * For example: dynamic classes that are added on hover, on focus, on
+  //  * @param {Array} classes
+  //  */
+  // declareMeaninglessClasses(classes) {
+  //   this._aut.meaninglessClasses = classes;
+  // }
+
+  /**
+   * BOOP
+   * @param {String} url
+   * @param {Object} data
+   * @param {boolean} ajax
+   */
+  sendEventToPrismAPI(url, data, ajax = true) {
+    if (ajax) {
+      if (!!window.fetch) {
+        fetch(url + NEW_EVENT_PATH, {
+          method: 'POST',
+          mode: 'CORS',
+          body: JSON.stringify(data),
+          headers: {'Content-Type': 'application/json'},
+        }).then((res) => {
+          console.log('sent event ', res);
+        }).catch((err) => {
+          console.error(err);
+        });
+      } else {
+        console.log('FETCH API IS N/A');
+      }
+    } else { // Send DATA via pixel image
+      if (!this.imgElement) {
+        this.imgElement = document.createElement('img');
+        document.body.appendChild(this.imgElement);
+      }
+      this.imgElement.crossOrigin = 'Anonymous';
+      this.imgElement.src = url + '/_data.gif?data=' + encodeURIComponent(JSON.stringify(data));
     }
-  }
-  
-  /**
-   * Extends Prism functionality - Allows to declare CSS classes to represent user clickable elements
-   * @param {Array} classes
-   */
-  declareClickableClasses(classes) {
-    this._aut.clickableClasses = classes;
-  }
-  
-  /**
-   * Extends Prism functionality - Allows to declare CSS classes to represent user meaningless classes
-   * For example: dynamic classes that are added on hover, on focus, on
-   * @param {Array} classes
-   */
-  declareMeaninglessClasses(classes) {
-    this._aut.meaninglessClasses = classes;
   }
 }
 

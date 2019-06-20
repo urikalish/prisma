@@ -1,0 +1,86 @@
+@import "../../variables";
+
+main {
+  margin-top: @main-margin-top !important;
+  padding-left: @main-padding-x !important;
+  padding-right: @main-padding-x !important;
+
+  .coverage-icon {
+    height: @coverage-icon-height;
+    width: @coverage-icon-width;
+    margin-right: @coverage-icon-margin-right;
+    display: inline-block;
+    vertical-align: middle;
+
+    .disabled {
+      background: @disabled-color !important;
+    }
+
+    > span {
+      height: 46%;
+      width: 100%;
+      display: block;
+
+      margin-bottom: 5%;
+    }
+
+    .production {
+      background: @production-color;
+    }
+
+    .testing {
+      width: 100%;
+
+      > span {
+        width: 48%;
+        height: 100%;
+        display: inline-block;
+      }
+    }
+
+    .manual {
+      background: @manual-color;
+      float: left;
+    }
+
+    .automation {
+      background: @automation-color;
+      float: right;
+    }
+  }
+
+  .setting {
+    font-size: @setting-font-size;
+    border: 1px solid @setting-border-color;
+    margin-top: @settings-margin-top;
+
+    .no-opacity {
+      opacity: 1;
+    }
+
+    .setting-header {
+      padding: @setting-padding-y @setting-padding-x !important;
+      height: @setting-header-height;
+      background: @bg-color;
+
+      .covered-state {
+        margin-right: 10px;
+      }
+    }
+
+    .setting-filters {
+      padding: @setting-padding-y @setting-padding-x !important;
+    }
+  }
+}
+
+footer {
+  margin-top: @footer-margin-top !important;
+  margin-bottom: auto !important;
+  height: @footer-height;
+  background-color: @bg-color;
+
+  recording {
+    width: 100%;
+  }
+}

@@ -14,14 +14,15 @@ export default class ElementCommon {
    * Check if element is of type tag
    * @param {Element} element - the DOM element to check
    * @param {string} tag - the element tag to check
-   * @return {boolean} - is element of type tag
+   * @return {boolean | null} - is element of type tag
    */
   static isElementTypeOf({element, tag}) {
-    let ret = false;
+    let ret;
 
-    if (!!element && !!element.tagName &&
-      element.tagName.toLowerCase() === tag.toLowerCase()) {
-      ret = true;
+    if (element == null || element.tagName == null) {
+      ret = null;
+    } else {
+      ret = element.tagName.toLowerCase() === tag.toLowerCase();
     }
 
     return ret;
@@ -34,6 +35,13 @@ export default class ElementCommon {
    */
   static isElementOfTypeSVG(element) {
     return ElementCommon.isElementTypeOf({element: element, tag: 'svg'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'line'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'polyline'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'rect'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'circle'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'ellipse'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'polygon'}) ||
+      ElementCommon.isElementTypeOf({element: element, tag: 'path'}) ||
       ElementCommon.isElementTypeOf({element: element, tag: 'use'});
   }
 

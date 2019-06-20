@@ -22,7 +22,7 @@ export default class PrismEventHandler {
     DomEventHandler.bindEvent({
       event: event,
       callback: callback,
-      element: document,
+      element: window,
     });
   }
 
@@ -37,7 +37,7 @@ export default class PrismEventHandler {
     eventObj.initEvent(event, true, true);
     eventObj.data = data;
 
-    document.dispatchEvent(eventObj);
+    window.dispatchEvent(eventObj);
   }
 }
 

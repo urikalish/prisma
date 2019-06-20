@@ -1,0 +1,38 @@
+<div class="options container disable-padding" [detectChanges]="alive$">
+  <loader [loader-show]="loading" [text]="'Checking connectivity...'"></loader>
+  <popup-header [title]="'Settings'" [showBrand]="isPopup" [showButtons]="false"></popup-header>
+
+  <main class="row flex-direction-col disable-padding">
+    <prism-features *ngIf="!isProduction && !isPopup"></prism-features>
+
+    <div class="row flex-direction-col">
+      <span>{{isPopup ? 'PRiSMA server URL' : 'Enter the PRiSMA server URL'}}</span>
+      <prism-input #input
+                   [onChangeCallback]="clearErrorMessage(input.value)"
+                   [ngClass]="{'invalid-input': input.value && errorMessage}"
+                   [ngModel]="state.get('prismBaseURL') || ''"
+                   [placeholder]="'https://[host]:[port]'">
+      </prism-input>
+      <span *ngIf="errorMessage"
+            class="error-message"
+            [innerHTML]="errorMessage"></span>
+    </div>
+
+    <div class="row h-end">
+      <prism-button *ngIf="!isFirstTime"
+                    text="Cancel"
+                    (click)="cancel()"></prism-button>
+
+      <prism-button *ngIf="!isFirstTime && !isPopup"
+                    text="Restore Defaults"
+                    class="clear-button"
+                    (click)="clear()"></prism-button>
+
+      <prism-button class="save-button"
+                    text="Save"
+                    [attr.data-disabled]="!input.value"
+                    (click)="save(input.value)"></prism-button>
+
+    </div>
+  </main>
+</div>

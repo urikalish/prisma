@@ -1,0 +1,29 @@
+<header class="row h-space-between v-center">
+  <div class="item flex-direction-row v-center">
+    <span class="back-button" *ngIf="showBackButton"
+          (click)="backgroundService.markHasRuns(true)"></span>
+    <span class="brand" *ngIf="showBrand"></span>
+    <span>{{title}}</span>
+  </div>
+  <div class="item" *ngIf="showButtons">
+    <ul class="row v-center disable-padding">
+      <li class="item header-button disable-padding v-center h-center"
+          [attr.data-tooltip]="'Settings'" (click)="optionsPage()">
+        <prism-button image="assets/images/settings.svg"
+                      size="medium"
+                      [border]="false">
+        </prism-button>
+      </li>
+      <li class="item header-button disable-padding v-center h-center"
+          (click)="backgroundService.toggleCoverage()"
+          [attr.data-tooltip]="'Show highlights'">
+        <prism-checkbox [value]="state?.get('colorAutView')" [flavor]="'toggle-round'"></prism-checkbox>
+      </li>
+      <li class="item" [attr.data-tooltip]="'Highlight color'">
+        <prism-color-picker [colors]="state.get('colorPallet').map(convertToRGB)"
+                            [selectedIndex]="state.get('selectedColorIndex')"
+                            (onColorSelected)="backgroundService.changeHighlighterColor($event)"></prism-color-picker>
+      </li>
+    </ul>
+  </div>
+</header>

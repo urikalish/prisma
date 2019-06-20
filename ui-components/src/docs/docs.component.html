@@ -1,0 +1,57 @@
+<div class="container main-container no-padding" prismToggle [isToggled]="true">
+  <nav class="row v-center h-space-between nowrap">
+    <div class="item flex-direction-row v-center">
+      <button class="menu-button" #toggleButton>
+        <span #showWhenOpened> << </span>
+        <span #showWhenClosed> >> </span>
+      </button>
+      <h4>
+        PRiSM
+
+        <small>< UI Components ></small>
+      </h4>
+    </div>
+    <div class="item h-space-between">
+      <a href="https://github.com/HPSoftware/prism" target="_blank" class="item menu-button github">
+        <img src="assets/github.svg" alt="">
+      </a>
+    </div>
+  </nav>
+  <main class="row no-margin no-padding nowrap">
+    <!-- SIDE MENU -->
+    <aside class="item" #toggleContent>
+      <ul class="row no-padding flex-direction-col">
+        <li class="item"
+            *ngFor="let item of asideLinks"
+            [ngClass]="{'link' : !!item.link}"
+            routerLinkActive="active">
+          {{ !item.link ? item.label : null }}
+          <a [routerLink]="item.link" *ngIf="!!item.link">- {{item.label}}</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- MAIN VIEW -->
+    <section id="main-section" class="item no-padding auto-width">
+      <!--&lt;!&ndash; GRID SECTION &ndash;&gt;-->
+      <!--<prism-grid-system class="container"></prism-grid-system>-->
+
+      <!--&lt;!&ndash; COMPONENTS SECTION &ndash;&gt;-->
+      <!--<prism-components class="container"></prism-components>-->
+      <!--&lt;!&ndash; END OF COMPONENTS &ndash;&gt;-->
+
+      <section class="container no-padding no-margin" [style.min-height]="'calc(100% - 120px)'" #scrollSection>
+        <router-outlet></router-outlet>
+      </section>
+
+      <footer class="container">
+        <div class="row v-center h-center">
+          <div class="item">PRiSM - 2017</div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- END OF MAIN VIEW -->
+  </main>
+</div>
+

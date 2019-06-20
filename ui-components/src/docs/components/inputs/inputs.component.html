@@ -1,0 +1,159 @@
+<div class="row" id="ui-inputs">
+  <div class="item">
+    <h3>
+      Inputs
+    </h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h4>
+      Input text field with 2 way binding model
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+    <h5>
+      - Input field has an option to receive a placeholder
+      <br>
+      - Input field can be filled with any content
+      <br>
+      - 2 way binding model can be done via [(ngModel)]="dataModel"
+    </h5>
+  </div>
+  <div class="item size-4">
+    <div class="row"><strong>Input text field settings:</strong></div>
+    <ul class="row flex-direction-col">
+      <li class="item v-center flex-direction-row">
+        <span class="code-settings">placeholder</span>
+        <span>option to set a static placeholder</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row v-center">
+  <div class="item">
+    Input with placeholder:
+  </div>
+  <div class="item">
+    <prism-input placeholder="Please enter text" [(ngModel)]="dataModel.text2">
+    </prism-input>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+    <pre class="code prettyprint">
+    &lt;prism-input [(ngModel)]=&quot;dataModel&quot;&gt;
+    &lt;/prism-input&gt;
+    </pre>
+  </div>
+</div>
+
+<div class="row v-center">
+  <div class="item">
+    Input with placeholder and two buttons on each side:
+  </div>
+  <div class="item">
+    <prism-input placeholder="Please enter text" [(ngModel)]="dataModel.text1">
+      <!--<div class="right row disable-padding">-->
+      <prism-button
+        [border]="false"
+        size="small"
+        text=""
+        image="/assets/passed.svg">
+      </prism-button>
+
+      <prism-button
+        [border]="false"
+        size="small"
+        text=""
+        image="/assets/failed.svg"
+        input-end>
+      </prism-button>
+      <!--</div>-->
+    </prism-input>
+  </div>
+</div>
+<div class="row v-center">
+  <div class="item size-6">
+    <pre>{{ dataModel.text1 }}</pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;prism-input placeholder=&quot;Please enter text&quot; [(ngModel)]=&quot;dataModel&quot;&gt;
+  &lt;prism-button
+      [border]=&quot;false&quot;
+      size=&quot;small&quot;
+      text=&quot;&quot;
+      image=&quot;someImage&quot;
+      (click)=&quot;onClickedImpl()&quot;&gt;
+  &lt;/prism-button&gt;
+  &lt;prism-button
+      [border]=&quot;false&quot;
+      size=&quot;small&quot;
+      text=&quot;&quot;
+      image=&quot;someImage&quot;
+      (click)=&quot;onClickedImpl()&quot;&gt;
+  &lt;/prism-button input-end&gt;
+&lt;/prism-input&gt;
+</pre>
+  </div>
+</div>
+
+<div class="row v-center">
+  <div class="item">
+    Input with placeholder and two buttons passed as content:
+  </div>
+  <div class="item">
+    <prism-input placeholder="Please enter text" [(ngModel)]="dataModel.text1">
+      <!--<div class="right row disable-padding">-->
+      <section class="row no-padding" input-end>
+        <prism-button
+          [border]="false"
+          size="small"
+          text=""
+          image="/assets/passed.svg">
+        </prism-button>
+
+        <prism-button
+          [border]="false"
+          size="small"
+          text=""
+          image="/assets/failed.svg">
+        </prism-button>
+      </section>
+      <!--</div>-->
+    </prism-input>
+  </div>
+</div>
+<div class="row">
+  <div class="item size-6">
+<pre class="code prettyprint">
+&lt;prism-input placeholder=&quot;Please enter text&quot; [(ngModel)]=&quot;dataModel&quot;&gt;
+  &lt;div class=&quot;row disable-padding&quot; input-end&gt;
+    &lt;prism-button
+        [border]=&quot;false&quot;
+        size=&quot;small&quot;
+        text=&quot;&quot;
+        image=&quot;someImage&quot;
+        (click)=&quot;onClickedImpl()&quot;&gt;
+    &lt;/prism-button&gt;
+    &lt;prism-button
+        [border]=&quot;false&quot;
+        size=&quot;small&quot;
+        text=&quot;&quot;
+        image=&quot;someImage&quot;
+        (click)=&quot;onClickedImpl()&quot;&gt;
+    &lt;/prism-button&gt;
+  &lt;/div&gt;
+&lt;/prism-input&gt;
+</pre>
+  </div>
+</div>

@@ -1,10 +1,16 @@
 let path = require('path');
 let webpack = require('webpack');
-let htmlPlugin = require('html-webpack-plugin');
-let Copy = require('./utils/copy_plugin');
-let Exec = require('./utils/exec_plugin');
+let Copy = require('webpack-common-utils').CopyPlugin;
+let Exec = require('webpack-common-utils').ExecPlugin;
+let Delete = require('webpack-common-utils').DeletePlugin;
+let ReinstallModule = require('webpack-common-utils').YarnRemoveModuleAndReinstallAll;
 
 const BUILD_DIRECTORY = 'build';
+
+const PACKAGE_MANAGER = 'yarn';
+const PKG_MNG_INSTALL = `${PACKAGE_MANAGER} install`;
+const PKG_MNG_BUILD = `${PACKAGE_MANAGER} build`;
+const NG_BUILD = `${PACKAGE_MANAGER} ng build --prod --aot`;
 
 const babelLoader = {
   test: /.js$/,
@@ -12,22 +18,14 @@ const babelLoader = {
   loader: 'babel-loader',
   exclude: /node_modules/,
   options: {
-    presets: ['es2015', 'env']
+    presets: ['@babel/preset-env']
   }
 };
-
-const cssLoader = {
-  test: /\.css$/,
-  loaders: ['style', 'css']
-};
-
 
 module.exports = {
   entry: {
     content_script: path.join(__dirname, 'src', 'js', 'content_scripts', 'content_script.js'),
-    background_script: path.join(__dirname, 'src', 'js', 'background_scripts', 'background_script.js'),
-    // popup: path.join(__dirname, 'src', 'popup', 'popup-new', 'dist', 'main.js'),
-    options_page: path.join(__dirname, 'src', 'options_page', 'js', 'options.js')
+    "injected-to-aut-scope": path.join(__dirname, 'src', 'js', 'content_scripts', 'injected-to-aut-scope.js')
   },
   
   output: {
@@ -37,39 +35,94 @@ module.exports = {
   },
   
   module: {
-    loaders: [babelLoader, cssLoader]
+    loaders: [babelLoader]
   },
   
   plugins: [
+    // Remove old build folder (And don't fail if folders are not found)
+    new Delete({
+      path: path.join(__dirname, '..', 'prism-purejs-core', 'lib'),
+      failOnError: false
+    }),
+    new Delete({
+      path: path.join(__dirname, '..', 'agent', 'lib'),
+      failOnError: false
+    }),
+    new Delete({
+      path: path.join(__dirname, BUILD_DIRECTORY),
+      failOnError: false
+    }),
+    
+    // BUILD prism-purejs-core project
+    new Exec({
+      command: PKG_MNG_INSTALL,
+      path: path.join(__dirname, '..', 'prism-purejs-core')
+    }),
+    new Exec({
+      command: PKG_MNG_BUILD,
+      path: path.join(__dirname, '..', 'prism-purejs-core')
+    }),
+    
+    new ReinstallModule({local_package: 'prism-purejs-core', path: path.join(__dirname, '..', 'agent')}),
+    new Exec({
+      command: PKG_MNG_BUILD,
+      path: path.join(__dirname, '..', 'agent')
+    }),
+    
+    // INSTALL UI-components
+    new Exec({
+      command: PKG_MNG_INSTALL,
+      path: path.join(__dirname, '..', 'ui-components')
+    }),
+    new Exec({
+      command: `${PKG_MNG_BUILD}-npm`,
+      path: path.join(__dirname, '..', 'ui-components')
+    }),
+    // BUILD Angular extension project
+    new ReinstallModule({local_package: 'ui-components', path: path.join(__dirname, 'src', 'extension')}),
+    new Exec({
+      command: NG_BUILD,
+      path: path.join(__dirname, 'src', 'extension')
+    }),
+    
+    // INSTALL node modules for THIS project
+    new ReinstallModule({local_package: 'prism-purejs-core', path: path.join(__dirname)}),
+    
+    // COPY & assemble PRiSM extension to `BUILD_DIRECTORY`
     new Copy({
-      src: path.join(__dirname, 'src', 'popup', 'popup-new', 'dist'),
-      dest: path.join(__dirname, 'build', 'popup'),
+      src: path.join(__dirname, 'src', 'extension', 'dist'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'extension'),
       type: 'folder'
     }),
     new Copy({
       src: path.join(__dirname, 'src', 'manifest.json'),
-      dest: path.join(__dirname, 'build', 'manifest.json'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'manifest.json'),
+      type: 'file'
+    }),
+    new Copy({
+      src: path.join(__dirname, 'src', 'prism.config'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'prism.config'),
       type: 'file'
     }),
     new Copy({
       src: path.join(__dirname, 'src', 'assets'),
-      dest: path.join(__dirname, 'build', 'assets'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'assets'),
       type: 'folder'
     }),
-    new Exec({command: path.join(__dirname, 'src', 'popup', 'popup-new', 'build')}),
-    
-    // new htmlPlugin({
-    //   template: path.join(__dirname, 'src', 'popup', 'popup-new', 'dist', 'index.html'),
-    //   filename: 'popup.html',
-    //   inject: 'body',
-    //   chunks: ['popup']
+    // new Copy({
+    //   src: path.join(__dirname, '..', 'agent', 'lib', 'prism-agent.min.js'),
+    //   dest: path.join(__dirname, BUILD_DIRECTORY, 'prism-purejs-agent.min.js'),
+    //   type: 'file'
     // }),
-    
-    new htmlPlugin({
-      template: path.join(__dirname, 'src', 'options_page', 'options.html'),
-      filename: 'options.html',
-      inject: 'body',
-      chunks: ['options_page']
+    new Copy({
+      src: path.join(__dirname, 'src', 'js', 'content_scripts', 'content-script-octane.js'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'content-script-octane.js'),
+      type: 'file'
+    }),
+    new Copy({
+      src: path.join(__dirname, 'src', 'js', 'content_scripts', 'aut-js-injector.js'),
+      dest: path.join(__dirname, BUILD_DIRECTORY, 'aut-js-injector.js'),
+      type: 'file'
     })
   ],
   
