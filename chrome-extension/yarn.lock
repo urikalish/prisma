@@ -2367,7 +2367,7 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-"prism-purejs-core@file:./../prism-purejs-core":
+"prism-purejs-core@file:../prism-purejs-core":
   version "0.0.1"
   dependencies:
     "@babel/polyfill" "^7.0.0-beta.35"
@@ -2781,8 +2781,8 @@ string_decoder@^1.0.0, string_decoder@~1.0.3:
     safe-buffer "~5.1.0"
 
 stringstream@~0.0.4:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/stringstream/-/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/stringstream/-/stringstream-0.0.6.tgz#7880225b0d4ad10e30927d167a1d6f2fd3b33a72"
 
 strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
@@ -3014,7 +3014,7 @@ watchpack@^1.4.0:
     chokidar "^1.7.0"
     graceful-fs "^4.1.2"
 
-"webpack-common-utils@file:./../webpack-common-utils":
+"webpack-common-utils@file:../webpack-common-utils":
   version "0.0.1"
 
 webpack-sources@^1.0.1:
