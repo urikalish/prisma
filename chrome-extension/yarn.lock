@@ -1965,8 +1965,8 @@ locate-path@^2.0.0:
     path-exists "^3.0.0"
 
 lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0:
-  version "4.17.4"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
 
 longest@^1.0.1:
   version "1.0.1"
@@ -2367,7 +2367,7 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-"prism-purejs-core@file:./../prism-purejs-core":
+"prism-purejs-core@file:../prism-purejs-core":
   version "0.0.1"
   dependencies:
     "@babel/polyfill" "^7.0.0-beta.35"
@@ -3014,7 +3014,7 @@ watchpack@^1.4.0:
     chokidar "^1.7.0"
     graceful-fs "^4.1.2"
 
-"webpack-common-utils@file:./../webpack-common-utils":
+"webpack-common-utils@file:../webpack-common-utils":
   version "0.0.1"
 
 webpack-sources@^1.0.1:
